@@ -1,18 +1,24 @@
-    /////// WAITING SIGNALS [ Ctrl-Z, Ctrl-D, Ctrl-C, Ctrl-\ ] //
-    /////// When press on of the keys with Ctrl, it's reffers ///
-    /////// to certain signal need to hadle it //////////////////
-
 
 #include "minishell.h"
 
 int main(void)
 {
-    char *line;
+    char    *buffer;
+    size_t  len;
 
+    buffer = NULL;
+    len = 0;
     while (1)
     {
-        line = readline("minishell$> ");
-        lexer(line);
-        // printf("%s", line);
+        //// Reading the input line
+        while (len == 0)
+        {
+            buffer = readline("minishell$> ");
+            len = ft_strlen(buffer);
+        }
+        printf("buffer= %s      size= %zu\n", buffer, len);
+        lexer(buffer); 
+        break;
+        
     }
 }
