@@ -12,24 +12,34 @@
 enum{
     SQUOTE = '\'',
     DQUOTE = '\"',
+    ESCAP = '\\',
+    OPTION = '-',
     REDIN = '<',
     REDOUT = '>',
-    
+    SEPERATOR = ';',
+    PIPE = '|',
+    DOLARS = '$',
+};
 
-}
-
-/* Token list : first var is Lexem = "data"
-                second var is type = "token type"
-                third var = "Next node"
-*/
-
-typedef struct  s_token
+typedef struct  s_tokens
 {
     char            *lex;
     int             type;
     struct t_token  *next;
-}               t_token;
+}               t_tokens;
 
-int lexer(char *buffer);
+typedef struct  s_data
+{
+    char        *buffer;
+    t_tokens    *token;
+}               t_data;
 
+int lexer(t_data *data);
+int sentence(t_data *data, int *index, char quote);
+
+
+// Tokens = command ; file ; sentence ; Operators ; 
+// command > sentence > Operator > file
+
+// Dif bet > & >> 
 #endif
