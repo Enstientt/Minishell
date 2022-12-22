@@ -11,7 +11,9 @@ LIB = minishell.h
 NAME = minishell
 
 SRCS = 	main.c \
-		lexer.c \
+		utils.c \
+		# lexer.c \
+		utils.c \
 
 OBJS = $(SRCS:.c=.o)
 

@@ -25,7 +25,7 @@ typedef struct  s_tokens
 {
     char            *lex;
     int             type;
-    struct t_token  *next;
+    struct s_tokens  *next;
 }               t_tokens;
 
 typedef struct  s_data
@@ -36,7 +36,9 @@ typedef struct  s_data
 
 int lexer(t_data *data);
 int sentence(t_data *data, int *index, char quote);
-
+int new_node(t_data *data);
+int free_node(t_data *data);
+int exit_error(t_data *data, int option, char *err);
 
 // Tokens = command ; file ; sentence ; Operators ; 
 // command > sentence > Operator > file

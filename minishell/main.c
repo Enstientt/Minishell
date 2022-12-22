@@ -16,7 +16,23 @@ int main(void)
             data.buffer = readline("minishell$> ");
             len = ft_strlen(data.buffer);
         }
-        lexer(&data);
+        data.token = malloc(sizeof(t_tokens));
+        data.token->lex = data.buffer;
+        data.token->next = NULL;
+        new_node(&data);
+        while (data.token != NULL)
+        {
+            printf("%s\n", data.token->lex);
+            data.token = data.token->next;
+        }
+        free_node(&data);
+        while (data.token != NULL)
+        {
+            printf("%s\n", data.token->lex);
+            data.token = data.token->next;
+        }
+
+        // lexer(&data);
         break;
         
     }

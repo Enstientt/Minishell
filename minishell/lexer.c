@@ -5,23 +5,16 @@ int sentence(t_data *data, int *index, char quote)
     // PUTING WHAT BETWEEN QUOTES OR ESCAP ON LEX STRING.
     // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
     // INCLUDE THE QUOTING ON THE LEX STRING.
+    int i;
 
-    if (data->buffer[*index] == '\'')
+    i = 0;
+    while (data->buffer[*index - 1] != quote)
     {
-        while (data->buffer[*index] != quote)
-        {
-            
-            *index++;
-        }
+        data->token->lex[i] = data->buffer[*index];
+        *index++;
     }
-    else if (data->buffer[*index] == '\"')
-    {
-
-    }
-    else if (data->buffer[*index] == '\\')
-    {
-
-    }
+    data->token->type = quote;
+    new_node(data);
 }
 
 int lexer(t_data *data)
@@ -30,6 +23,7 @@ int lexer(t_data *data)
 
     i = 0;
     data->token = malloc(sizeof(t_tokens));
+    data->token->next = NULL;
     while (data->buffer[i])
     {
         /// SENTENCE / COMMAND CASES : SINGLE / DOUBLE QUOTES & ESCAPE
