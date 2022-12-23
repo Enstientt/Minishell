@@ -14,24 +14,24 @@ int exit_error(t_data *data, int option, char *err)
 }
 
 /// give the original list
-int free_node(t_data *data)
+int free_list(t_data *data)
 {
-    while (data->token->next != NULL)
+    while (data->tokens != NULL)
     {
-        free(data->token);
-        data->token = data->token->next;
+        free(data->tokens);
+        data->tokens = data->tokens->next;
     }
     return (0);
 }
 
-int new_node(t_data *data)
+int add_new_node(t_data *data, t_tokens *token)
 {
-    t_tokens    *token;
+    t_tokens    *node;
 
-    token = malloc(sizeof(t_tokens));
-    if (!token)
+    node = malloc(sizeof(t_tokens));
+    if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");
-    token->next = NULL;
-    data->token->next = token;
+    node->next = NULL;
+    token->next = node;
     return (0);
 }

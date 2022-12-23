@@ -31,13 +31,13 @@ typedef struct  s_tokens
 typedef struct  s_data
 {
     char        *buffer;
-    t_tokens    *token;
+    t_tokens    *tokens;
 }               t_data;
 
 int lexer(t_data *data);
-int sentence(t_data *data, int *index, char quote);
-int new_node(t_data *data);
-int free_node(t_data *data);
+void sentence(t_data *data, t_tokens *token, int *index, char quote);
+int add_new_node(t_data *data, t_tokens *token);
+int free_list(t_data *data);
 int exit_error(t_data *data, int option, char *err);
 
 // Tokens = command ; file ; sentence ; Operators ; 
