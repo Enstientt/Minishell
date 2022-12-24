@@ -24,7 +24,7 @@ int free_list(t_data *data)
     return (0);
 }
 
-int add_new_node(t_data *data, t_tokens *token)
+int add_new_node(t_data *data, t_tokens *tmp)
 {
     t_tokens    *node;
 
@@ -32,6 +32,6 @@ int add_new_node(t_data *data, t_tokens *token)
     if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");
     node->next = NULL;
-    token->next = node;
+    tmp->next = node;
     return (0);
 }

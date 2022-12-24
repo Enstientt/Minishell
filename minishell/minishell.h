@@ -35,7 +35,8 @@ typedef struct  s_data
 }               t_data;
 
 int lexer(t_data *data);
-void sentence(t_data *data, t_tokens *token, int *index, char quote);
+int is_sentence(t_data *data, char *buff, t_tokens *tmp, char quote);
+int is_escap(char c);
 int add_new_node(t_data *data, t_tokens *token);
 int free_list(t_data *data);
 int exit_error(t_data *data, int option, char *err);

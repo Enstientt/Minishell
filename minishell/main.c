@@ -3,24 +3,19 @@
 
 int main(void)
 {
+    char    *input;
     t_data  data;
-    size_t  len;
 
     data.buffer = NULL;
-    len = 0;
     while (1)
     {
         //// Reading the input line
-        while (len == 0)
+        while (!data.buffer)
         {
-            data.buffer = readline("minishell$> ");
-            len = ft_strlen(data.buffer);
+            input = readline("minishell$> ");
+            data.buffer = ft_strdup(input);
         }
+        /// Lexer : part one-> tokonizing the buffer
         lexer(&data);
-        // while (data.tokens != NULL)
-        // {
-        //     printf("%s\n", data.tokens->lex);
-        //     data.tokens = data.tokens->next;
-        // }     
     }
 }

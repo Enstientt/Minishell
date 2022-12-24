@@ -13,6 +13,7 @@ NAME = minishell
 SRCS = 	main.c \
 		utils.c \
 		lexer.c \
+		lexer_utils.c \
 
 OBJS = $(SRCS:.c=.o)
 
