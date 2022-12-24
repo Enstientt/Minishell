@@ -31,6 +31,7 @@ int add_new_node(t_data *data, t_tokens *tmp)
     node = malloc(sizeof(t_tokens));
     if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");
+    node->lex = ft_strdup("");
     node->next = NULL;
     tmp->next = node;
     return (0);

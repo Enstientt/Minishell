@@ -17,5 +17,7 @@ int main(void)
         }
         /// Lexer : part one-> tokonizing the buffer
         lexer(&data);
+
+        /// Lexer analyzer : generate errors / generate a valid linked list.
     }
 }

@@ -19,6 +19,7 @@ enum{
     SEPERATOR = ';',
     PIPE = '|',
     DOLARS = '$',
+    KEYWORD = -1,
 };
 
 typedef struct  s_tokens
@@ -35,11 +36,12 @@ typedef struct  s_data
 }               t_data;
 
 int lexer(t_data *data);
-int is_sentence(t_data *data, char *buff, t_tokens *tmp, char quote);
-int is_escap(char c);
+int sentence(t_data *data, char *buff, t_tokens **tmp, char quote);
+int is_quoted(char c);
 int add_new_node(t_data *data, t_tokens *token);
 int free_list(t_data *data);
 int exit_error(t_data *data, int option, char *err);
+void    display_list(t_data *data);
 
 // Tokens = command ; file ; sentence ; Operators ; 
 // command > sentence > Operator > file
