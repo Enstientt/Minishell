@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
+/*   Updated: 2022/12/25 13:03:05 by ahammout         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -35,12 +47,14 @@ typedef struct  s_data
     t_tokens    *tokens;
 }               t_data;
 
-int lexer(t_data *data);
-int sentence(t_data *data, char *buff, t_tokens **tmp, char quote);
-int is_quoted(char c);
-int add_new_node(t_data *data, t_tokens *token);
-int free_list(t_data *data);
-int exit_error(t_data *data, int option, char *err);
+int     lexer(t_data *data);
+int     quotes(t_data *data, char *buff, t_tokens **tmp, char quote);
+int     escap(t_data *data, char *buff, t_tokens **tmp);
+int     is_escap(char c);
+int     keyword(t_data *data, char *buff, t_tokens **tmp);
+int     add_new_node(t_data *data, t_tokens *token);
+void    free_data(t_data *data);
+int     exit_error(t_data *data, int option, char *err);
 void    display_list(t_data *data);
 
 // Tokens = command ; file ; sentence ; Operators ; 

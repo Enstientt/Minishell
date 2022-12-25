@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
+/*   Updated: 2022/12/25 13:06:50 by ahammout         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"minishell.h"
 
 int exit_error(t_data *data, int option, char *err)
@@ -11,28 +23,4 @@ int exit_error(t_data *data, int option, char *err)
     }
     return (0);
     
-}
-
-/// give the original list
-int free_list(t_data *data)
-{
-    while (data->tokens != NULL)
-    {
-        free(data->tokens);
-        data->tokens = data->tokens->next;
-    }
-    return (0);
-}
-
-int add_new_node(t_data *data, t_tokens *tmp)
-{
-    t_tokens    *node;
-
-    node = malloc(sizeof(t_tokens));
-    if (!node)
-        exit_error(data, 1, "Malloc: allocation failed.");
-    node->lex = ft_strdup("");
-    node->next = NULL;
-    tmp->next = node;
-    return (0);
 }

@@ -1,4 +1,17 @@
-    //     // File comes after those : REDIRECTION / APPEND OUTPUT
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    buckup                                             :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ahammout <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#              #
+#    Updated: 2022/12/25 11:15:36 by ahammout         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+    
+	//     // File comes after those : REDIRECTION / APPEND OUTPUT
     //     else if (data->buffer[i] == REDOUT && data->buffer[i + 1] == REDOUT)
     //     {
 
