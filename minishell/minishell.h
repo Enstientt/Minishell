@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 13:03:05 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/25 13:57:34 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ typedef struct  s_data
 }               t_data;
 
 int     lexer(t_data *data);
-int     quotes(t_data *data, char *buff, t_tokens **tmp, char quote);
-int     escap(t_data *data, char *buff, t_tokens **tmp);
+int     quotes(t_data *data, char *buff, t_tokens *tmp, char quote);
+int     escap(t_data *data, char *buff, t_tokens *tmp);
 int     is_escap(char c);
-int     keyword(t_data *data, char *buff, t_tokens **tmp);
+int     keyword(t_data *data, char *buff, t_tokens *tmp);
 int     add_new_node(t_data *data, t_tokens *token);
 void    free_data(t_data *data);
 int     exit_error(t_data *data, int option, char *err);

@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 13:06:50 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/25 14:51:00 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,16 @@ int exit_error(t_data *data, int option, char *err)
     {
         free(data->buffer);
         printf("%s\n", err);
-        exit(EXIT_FAILURE);
     }
+    else if (option == 2)
+    {
+        free(data->buffer);
+        while (data->tokens != NULL)
+        {
+            free(data->buffer);
+            data->tokens = data->tokens->next;
+        }
+    }
+    exit(EXIT_FAILURE);
     return (0);
-    
 }
