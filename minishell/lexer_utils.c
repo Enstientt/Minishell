@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 14:32:39 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/26 13:46:48 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ int is_escap(char c)
 int add_new_node(t_data *data, t_tokens *tmp)
 {
     t_tokens    *node;
+    // t_tokens    *to_free;
 
+    // to_free = tmp;
     node = malloc(sizeof(t_tokens));
     if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");

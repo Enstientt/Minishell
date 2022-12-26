@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 14:51:00 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/26 11:52:47 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int exit_error(t_data *data, int option, char *err)
 {
-    /// FREE JUST THE BUFFER && DISPLAY ERROR
+    /// FREE JUST THE BUFFER && DISPLAY ERROR.
     if (option == 1)
     {
         free(data->buffer);
         printf("%s\n", err);
     }
+    /// THIS IS FOR LEXER PART.
     else if (option == 2)
     {
         free(data->buffer);
         while (data->tokens != NULL)
         {
-            free(data->buffer);
+            free(data->tokens->lex);
+            free(data->tokens);
             data->tokens = data->tokens->next;
         }
     }

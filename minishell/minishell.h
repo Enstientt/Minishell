@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 13:57:34 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:10:59 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,25 @@ enum{
     OPTION = '-',
     REDIN = '<',
     REDOUT = '>',
+    APPOUT = -124,
+    APPIN = -120,
     SEPERATOR = ';',
     PIPE = '|',
-    DOLARS = '$',
+    VARIABLE_ = '$',
     KEYWORD = -1,
 };
+
+typedef struct  s_var
+{
+    char    *name;
+    char    *value;
+}               t_var;
+
+typedef struct  s_env
+{
+    t_var   var;
+}               t_env;
+
 
 typedef struct  s_tokens
 {
@@ -44,6 +58,8 @@ typedef struct  s_tokens
 typedef struct  s_data
 {
     char        *buffer;
+    char        *envp_;
+    t_env       *env;
     t_tokens    *tokens;
 }               t_data;
 
@@ -52,7 +68,9 @@ int     quotes(t_data *data, char *buff, t_tokens *tmp, char quote);
 int     escap(t_data *data, char *buff, t_tokens *tmp);
 int     is_escap(char c);
 int     keyword(t_data *data, char *buff, t_tokens *tmp);
-int     add_new_node(t_data *data, t_tokens *token);
+int     operator(t_data *data, char *buff, t_tokens *tmp, int type);
+void    optype(int size, int type, t_tokens *tmp);
+int     add_new_node(t_data *data, t_tokens *tmp);
 void    free_data(t_data *data);
 int     exit_error(t_data *data, int option, char *err);
 void    display_list(t_data *data);

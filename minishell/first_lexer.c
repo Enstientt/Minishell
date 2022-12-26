@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   first_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/25 15:07:00 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:14:03 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,85 +16,12 @@
     // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
     // INCLUDE THE QUOTING ON THE LEX STRING.
 
-int keyword(t_data *data, char *buff, t_tokens *tmp)
-{
-    int i;
-    int j;
-    int len;
-
-    i = 0;
-    j = 0;
-    len = 0;
-    printf("This is the buffer from keyword: %s\n", buff);
-    while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
-    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
-        tmp->lex[j++] = buff[i++];
-    tmp->lex[j] = '\0';
-    tmp->type = KEYWORD;
-    return (i);
-}
-
-int escap(t_data *data, char *buff, t_tokens *tmp)
-{
-    int i;
-    int j;
-    int len;
-
-    i = 0;
-    j = 0;
-    len = 0;
-    while (is_escap(buff[len]))
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
-    while (is_escap(buff[i]))
-        tmp->lex[j++] = buff[i++];
-    tmp->lex[j] = '\0';
-    tmp->type = ESCAP;
-    return (i);
-}
-
-int quotes(t_data *data, char *buff, t_tokens *tmp, char quote)
-{
-    int i;
-    int j;
-    int len;
-
-    i = 0;
-    j = 0;
-    len = 0;
-
-    // COUNTING THE SIZE FOR ALLOCATION DY
-    while (buff[len] == quote)
-        len++;
-    while (buff[len] != quote && buff[len] != '\0')
-        len++;
-    while (buff[len] == quote)
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
-    while (buff[i] == quote)
-        tmp->lex[j++] = buff[i++];
-    while (buff[i] != quote && buff[i] != '\0')
-        tmp->lex[j++] = buff[i++];
-    while (buff[i] == quote)
-        tmp->lex[j++] = buff[i++];
-    tmp->lex[j] = '\0';
-    tmp->type = quote;
-    return(i);
-}
-
 int lexer(t_data *data)
 {
     int         i;
     int         add_node;
     t_tokens    *tmp;
+    t_tokens    *to_free;
 
     i = 0;
     add_node = 0;
@@ -103,6 +30,7 @@ int lexer(t_data *data)
     tmp = data->tokens;
     while (data->buffer[i])
     {
+        to_free = tmp;
         if (data->buffer[i] == ' ' || data->buffer[i] == '\t')
             while(data->buffer[i] == ' ' || data->buffer[i] == '\t')
                 i++;
@@ -138,41 +66,68 @@ int lexer(t_data *data)
                 i += escap (data, data->buffer + i, tmp);
                 add_node = 1;
             }
-            // File comes after those : REDIRECTION / APPEND OUTPUT
-            else if (data->buffer[i] == REDOUT && data->buffer[i + 1] == REDOUT)
-            {
-                
-            }
+
+            // REDIRECTION / APPEND OUTPUT  [File comes after those].
             else if (data->buffer[i] == REDOUT)
             {
-
+                if (add_node)
+                {
+                    add_new_node(data, tmp);
+                    free(tmp->lex);
+                    tmp = tmp->next;
+                }
+                i += operator(data, data->buffer + i, tmp, REDOUT);
+                add_node = 1;
             }
 
-            // REDIRECTION / APPEND INPUT
-            else if (data->buffer[i] == REDIN  && data->buffer[i + 1] == REDIN)
-            {
-
-            }
+            // REDIRECTION / APPEND INPUT.
             else if (data->buffer[i] == REDIN)
             {
-
+                if (add_node)
+                {
+                    add_new_node(data, tmp);
+                    free(tmp->lex);
+                    tmp = tmp->next;
+                }
+                i += operator(data, data->buffer + i, tmp, REDIN);
+                add_node = 1;
             }
         
-            /// operational operators
+            /// OPERATIONAL OPERATORS.
             else if (data->buffer[i] == SEPERATOR)
             {
                 // Sep case
+                if (add_node)
+                {
+                    add_new_node(data, tmp);
+                    free(tmp->lex);
+                    tmp = tmp->next;
+                }
+                i += operator(data, data->buffer + i, tmp, SEPERATOR);
+                add_node = 1;
 
             }
             else if (data->buffer[i] == PIPE)
             {
                 // Pipe case
-
+                if (add_node)
+                {
+                    add_new_node(data, tmp);
+                    free(tmp->lex);
+                    tmp = tmp->next;
+                }
+                i += operator(data, data->buffer + i, tmp, PIPE);
             }
-            else if (data->buffer[i] == DOLARS)
+            else if (data->buffer[i] == VARIABLE_)
             {
                 // variable case
-
+                if (add_node)
+                {
+                    add_new_node(data, tmp);
+                    free(tmp->lex);
+                    tmp = tmp->next;
+                }
+                i += operator(data, data->buffer + i, tmp, VARIABLE_);
             }
             else
             {
@@ -187,6 +142,7 @@ int lexer(t_data *data)
         }
     }
     display_list(data);
+    free(tmp->lex);
     free(tmp);
     return (0);
 }
