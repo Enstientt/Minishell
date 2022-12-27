@@ -6,23 +6,19 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/26 13:46:48 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/27 18:45:43 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/// FUNCTION USED FOR LEXER PART.
-// FREE THE TOKENS LIST  && THE INPUT BUFFER
-void    free_data(t_data *data)
+void    free_tmp(t_tokens *to_free)
 {
-    free(data->buffer);
-    data->buffer = NULL;
-    while (data->tokens != NULL)
+    while (to_free != NULL)
     {
-        free(data->tokens->lex);
-        free(data->tokens);
-        data->tokens = data->tokens->next;
+        free(to_free->lex);
+        free(to_free);
+        to_free = to_free->next;
     }
 }
 

@@ -1,23 +1,21 @@
 #include"minishell.h"
 
-void    optype(int size, int type, t_tokens *tmp);
-
 void    optype(int size, int type, t_tokens *tmp)
 {
     if (size == 1 && type == REDOUT)
         tmp->type = REDOUT;
     else if (size > 1 && type == REDOUT)
-        tmp->type = APPOUT;
+        tmp->type = APPEND;
     else if (size == 1 && type == REDIN)
         tmp->type = REDIN;
     else if (size > 1 && type == REDIN)
-        tmp->type = APPIN;
+        tmp->type = HEREDOC;
     else if (type == PIPE)
         tmp->type = PIPE;
     else if (type == SEPERATOR)
         tmp->type = PIPE;
-    else if (type == VARIABLE_)
-        tmp->type = VARIABLE_;
+    else if (type == EXPAND_)
+        tmp->type = EXPAND_;
 }
 
 int operator(t_data *data, char *buff, t_tokens *tmp, int type)
@@ -31,6 +29,7 @@ int operator(t_data *data, char *buff, t_tokens *tmp, int type)
     len = 0;
     while (buff[len] == type)
         len++;
+    tmp->lenght = len;
     tmp->lex = malloc (sizeof(char) * len);
     if (!tmp->lex)
         exit_error(data, 2, "Minishell: Allocation failed.");

@@ -6,14 +6,13 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/26 18:14:03 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/27 19:09:14 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"minishell.h"
 
     // PUTING WHAT BETWEEN QUOTES OR ESCAP ON LEX STRING.
-    // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
     // INCLUDE THE QUOTING ON THE LEX STRING.
 
 int lexer(t_data *data)
@@ -26,11 +25,13 @@ int lexer(t_data *data)
     i = 0;
     add_node = 0;
     data->tokens = malloc(sizeof(t_tokens));
+    if (!data->tokens)
+        exit_error(data, 1, "Minishell: Allocation failed.");
     data->tokens->next = NULL;
     tmp = data->tokens;
+    to_free = tmp;
     while (data->buffer[i])
     {
-        to_free = tmp;
         if (data->buffer[i] == ' ' || data->buffer[i] == '\t')
             while(data->buffer[i] == ' ' || data->buffer[i] == '\t')
                 i++;
@@ -40,7 +41,7 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node (data, tmp);
                     tmp = tmp->next;
                 }
                 i += quotes (data, data->buffer + i, tmp, SQUOTE);
@@ -50,7 +51,7 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node (data, tmp);
                     tmp = tmp->next;
                 }
                 i += quotes (data, data->buffer + i, tmp, DQUOTE);
@@ -60,7 +61,7 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node (data, tmp);
                     tmp = tmp->next;
                 }
                 i += escap (data, data->buffer + i, tmp);
@@ -72,8 +73,7 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
-                    free(tmp->lex);
+                    add_new_node (data, tmp);
                     tmp = tmp->next;
                 }
                 i += operator(data, data->buffer + i, tmp, REDOUT);
@@ -86,7 +86,6 @@ int lexer(t_data *data)
                 if (add_node)
                 {
                     add_new_node(data, tmp);
-                    free(tmp->lex);
                     tmp = tmp->next;
                 }
                 i += operator(data, data->buffer + i, tmp, REDIN);
@@ -100,7 +99,6 @@ int lexer(t_data *data)
                 if (add_node)
                 {
                     add_new_node(data, tmp);
-                    free(tmp->lex);
                     tmp = tmp->next;
                 }
                 i += operator(data, data->buffer + i, tmp, SEPERATOR);
@@ -113,21 +111,21 @@ int lexer(t_data *data)
                 if (add_node)
                 {
                     add_new_node(data, tmp);
-                    free(tmp->lex);
                     tmp = tmp->next;
                 }
                 i += operator(data, data->buffer + i, tmp, PIPE);
+                add_node = 1;
             }
-            else if (data->buffer[i] == VARIABLE_)
+            else if (data->buffer[i] == EXPAND_)
             {
                 // variable case
                 if (add_node)
                 {
                     add_new_node(data, tmp);
-                    free(tmp->lex);
                     tmp = tmp->next;
                 }
                 i += operator(data, data->buffer + i, tmp, VARIABLE_);
+                add_node = 1;
             }
             else
             {
@@ -142,8 +140,7 @@ int lexer(t_data *data)
         }
     }
     display_list(data);
-    free(tmp->lex);
-    free(tmp);
+    free_tmp(to_free);
     return (0);
 }
 
