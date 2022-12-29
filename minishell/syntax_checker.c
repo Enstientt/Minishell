@@ -6,7 +6,7 @@
 #include "minishell.h"
 
 
-void    error_generator(t_data *data, char *input, char *err)
+void    generate_err(t_data *data, char *input, char *err)
 {
     printf("Minishell: %s: %s", input, err);
     free(data->buffer);
@@ -19,8 +19,9 @@ void    error_generator(t_data *data, char *input, char *err)
     exit(EXIT_FAILURE);
 }
 
+// Process 2 
 // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
-void    expand_check_quotes(t_data *data, t_tokens *tmp, t_tokens *to_free)
+void    quotes_syntax(t_data *data, t_tokens *tmp, t_tokens *to_free)
 {
     int i;
     int first;
@@ -35,7 +36,7 @@ void    expand_check_quotes(t_data *data, t_tokens *tmp, t_tokens *to_free)
         while (tmp->lex[i] != tmp->type)
         {
             if (tmp->lex[i] == EXPAND_)
-                expand(data, tmp);
+                i += expand(data, tmp->lex[i], tmp);
             i++;
         }
         while (tmp->lex[i] == tmp->type)
@@ -43,7 +44,7 @@ void    expand_check_quotes(t_data *data, t_tokens *tmp, t_tokens *to_free)
         if (first != last)
         {
             free_tmp(to_free);
-            error_generator(data, tmp->lex, "inclosed quotes");
+            generate_err(data, tmp->lex, "inclosed quotes");
         }
     }
 }
@@ -59,11 +60,11 @@ int syntax_checker (t_data *data)
     while (tmp != NULL)
     {
         if (tmp->type == SQUOTE || tmp->type == DQUOTE)
-            expand_check_quotes(data, tmp);
+            quotes_syntax(data, tmp);
         else if (tmp->type == ESCAP)
-            expand_check_escap(data, tmp);
+            quotes_syntax(data, tmp);
         else if (tmp->type == REDIN || tmp->type == APPEND || tmp->type == HEREDOC || tmp->type == SEPERATOR)
-            operator_check(data, tmp, to_free);
+            operator_syntax(data, tmp, to_free);
         tmp  = tmp->next;
     }
     return (0);

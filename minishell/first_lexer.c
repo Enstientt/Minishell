@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/27 19:09:14 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/29 14:47:17 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int lexer(t_data *data)
                     add_new_node(data, tmp);
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, VARIABLE_);
+                i += operator(data, data->buffer + i, tmp, EXPAND_);
                 add_node = 1;
             }
             else
