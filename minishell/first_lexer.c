@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/29 14:47:17 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/31 19:01:50 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,30 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node (data, tmp);
+                    add_new_node (data, tmp, quotes (data->buffer + i, tmp, SQUOTE, 0));
                     tmp = tmp->next;
                 }
-                i += quotes (data, data->buffer + i, tmp, SQUOTE);
+                i += quotes (data->buffer + i, tmp, SQUOTE, 0);
                 add_node = 1;
             }
             else if (data->buffer[i] == DQUOTE)
             {
                 if (add_node)
                 {
-                    add_new_node (data, tmp);
+                    add_new_node (data, tmp, quotes (data->buffer + i, tmp, DQUOTE, 0));
                     tmp = tmp->next;
                 }
-                i += quotes (data, data->buffer + i, tmp, DQUOTE);
+                i += quotes (data->buffer + i, tmp, DQUOTE, 1);
                 add_node = 1;
             }
             else if (data->buffer[i] == ESCAP)
             {
                 if (add_node)
                 {
-                    add_new_node (data, tmp);
+                    add_new_node (data, tmp, escap (data->buffer + i, tmp, 0));
                     tmp = tmp->next;
                 }
-                i += escap (data, data->buffer + i, tmp);
+                i += escap (data->buffer + i, tmp, 1);
                 add_node = 1;
             }
 
@@ -73,10 +73,10 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node (data, tmp);
+                    add_new_node (data, tmp, operator(data->buffer + i, tmp, REDOUT, 0));
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, REDOUT);
+                i += operator(data->buffer + i, tmp, REDOUT, 1);
                 add_node = 1;
             }
 
@@ -85,10 +85,10 @@ int lexer(t_data *data)
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node(data, tmp, operator(data->buffer + i, tmp, REDOUT, 0));
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, REDIN);
+                i += operator(data->buffer + i, tmp, REDIN, 1);
                 add_node = 1;
             }
         
@@ -98,10 +98,10 @@ int lexer(t_data *data)
                 // Sep case
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node(data, tmp, operator(data->buffer + i, tmp, REDOUT, 0));
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, SEPERATOR);
+                i += operator(data->buffer + i, tmp, SEPERATOR, 1);
                 add_node = 1;
 
             }
@@ -110,10 +110,10 @@ int lexer(t_data *data)
                 // Pipe case
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node(data, tmp, operator(data->buffer + i, tmp, REDOUT, 0));
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, PIPE);
+                i += operator(data->buffer + i, tmp, PIPE, 1);
                 add_node = 1;
             }
             else if (data->buffer[i] == EXPAND_)
@@ -121,20 +121,21 @@ int lexer(t_data *data)
                 // variable case
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node(data, tmp, operator(data->buffer + i, tmp, REDOUT, 0));
                     tmp = tmp->next;
                 }
-                i += operator(data, data->buffer + i, tmp, EXPAND_);
+                i += operator(data->buffer + i, tmp, EXPAND_, 1);
                 add_node = 1;
             }
             else
             {
                 if (add_node)
                 {
-                    add_new_node(data, tmp);
+                    add_new_node(data, tmp, keyword(data->buffer + i, tmp, 0));
                     tmp = tmp->next;
                 }
-                i += keyword(data, data->buffer + i, tmp);
+                tmp->lex = malloc(sizeof(char) * 2);
+                i += keyword(data->buffer + i, tmp, 1);
                 add_node = 1;
             }
         }

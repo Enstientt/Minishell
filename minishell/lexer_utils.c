@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/27 18:45:43 by ahammout         ###   ########.fr       */
+/*   Updated: 2022/12/31 18:36:53 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int is_escap(char c)
     return (0); 
 }
 
-int add_new_node(t_data *data, t_tokens *tmp)
+// add var that coungtain the len of lexeme
+// allocate the lexem with len 
+int     add_new_node(t_data *data, t_tokens *tmp, int lex_size)
 {
     t_tokens    *node;
     // t_tokens    *to_free;
@@ -40,6 +42,7 @@ int add_new_node(t_data *data, t_tokens *tmp)
     node = malloc(sizeof(t_tokens));
     if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");
+    node->lex = malloc(sizeof(char) * lex_size);
     node->next = NULL;
     tmp->next = node;
     return (0);

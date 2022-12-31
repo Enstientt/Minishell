@@ -18,7 +18,9 @@ void    optype(int size, int type, t_tokens *tmp)
         tmp->type = EXPAND_;
 }
 
-int operator(t_data *data, char *buff, t_tokens *tmp, int type)
+//// Function bellow return the size of lexem if option equal to 0 
+///  | otherwise fill the lexem and return index [index = lenght].
+int operator(char *buff, t_tokens *tmp, int type, int option)
 {
     int i;
     int j;
@@ -27,20 +29,21 @@ int operator(t_data *data, char *buff, t_tokens *tmp, int type)
     i = 0;
     j = 0;
     len = 0;
-    while (buff[len] == type)
-        len++;
-    tmp->lenght = len;
-    tmp->lex = malloc (sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed.");
+    if (option == 0)
+    {
+        while (buff[len] == type)
+            len++;
+        tmp->lenght = len;
+        return (len);
+    }
     while (buff[i] == type)
         tmp->lex[j++] = buff[i++];
     tmp->lex[j] = '\0';
-    optype(len, type, tmp);
+    optype(tmp->lenght, type, tmp);
     return (i);
 }
 
-int keyword(t_data *data, char *buff, t_tokens *tmp)
+int keyword(char *buff, t_tokens *tmp, int option)
 {
     int i;
     int j;
@@ -48,12 +51,14 @@ int keyword(t_data *data, char *buff, t_tokens *tmp)
 
     i = 0;
     j = 0;
-    len = 0;
-    while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
+    if (option == 0)
+    {
+        len = 0;
+        while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
+            len++;
+        tmp->lenght = len;
+        return (len);
+    }
     while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
         tmp->lex[j++] = buff[i++];
     tmp->lex[j] = '\0';
@@ -61,7 +66,7 @@ int keyword(t_data *data, char *buff, t_tokens *tmp)
     return (i);
 }
 
-int escap(t_data *data, char *buff, t_tokens *tmp)
+int escap(char *buff, t_tokens *tmp, int option)
 {
     int i;
     int j;
@@ -69,12 +74,14 @@ int escap(t_data *data, char *buff, t_tokens *tmp)
 
     i = 0;
     j = 0;
-    len = 0;
-    while (is_escap(buff[len]))
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
+    if (option == 0)
+    {
+        len = 0;
+        while (is_escap(buff[len]))
+            len++;
+        tmp->lenght = len;
+        return (len);
+    }
     while (is_escap(buff[i]))
         tmp->lex[j++] = buff[i++];
     tmp->lex[j] = '\0';
@@ -82,7 +89,7 @@ int escap(t_data *data, char *buff, t_tokens *tmp)
     return (i);
 }
 
-int quotes(t_data *data, char *buff, t_tokens *tmp, char quote)
+int quotes(char *buff, t_tokens *tmp, char quote, int option)
 {
     int i;
     int j;
@@ -93,15 +100,16 @@ int quotes(t_data *data, char *buff, t_tokens *tmp, char quote)
     len = 0;
 
     // COUNTING THE SIZE FOR ALLOCATION DY
-    while (buff[len] == quote)
-        len++;
-    while (buff[len] != quote && buff[len] != '\0')
-        len++;
-    while (buff[len] == quote)
-        len++;
-    tmp->lex = malloc(sizeof(char) * len);
-    if (!tmp->lex)
-        exit_error(data, 2, "Minishell: Allocation failed");
+    if (option == 0)
+    {
+        while (buff[len] == quote)
+            len++;
+        while (buff[len] != quote && buff[len] != '\0')
+            len++;
+        while (buff[len] == quote)
+            len++;
+        return (len);
+    }
     while (buff[i] == quote)
         tmp->lex[j++] = buff[i++];
     while (buff[i] != quote && buff[i] != '\0')
