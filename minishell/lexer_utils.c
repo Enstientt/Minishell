@@ -6,21 +6,11 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2022/12/31 18:36:53 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/02 15:44:30 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void    free_tmp(t_tokens *to_free)
-{
-    while (to_free != NULL)
-    {
-        free(to_free->lex);
-        free(to_free);
-        to_free = to_free->next;
-    }
-}
 
 int is_escap(char c)
 {
@@ -31,33 +21,29 @@ int is_escap(char c)
     return (0); 
 }
 
-// add var that coungtain the len of lexeme
-// allocate the lexem with len 
-int     add_new_node(t_data *data, t_tokens *tmp, int lex_size)
+int     add_new_node(t_data *data)
 {
     t_tokens    *node;
-    // t_tokens    *to_free;
 
-    // to_free = tmp;
     node = malloc(sizeof(t_tokens));
     if (!node)
         exit_error(data, 1, "Malloc: allocation failed.");
-    node->lex = malloc(sizeof(char) * lex_size);
     node->next = NULL;
-    tmp->next = node;
+    data->token->next = node;
     return (0);
 }
 
-void    display_list(t_data *data)
+void    display_list(t_tokens *token)
 {
     int n;
+    t_tokens *tmp;
 
     n = 0;
-    // DISPLAY THE LIST 
-    while (data->tokens != NULL)
+    tmp = token;
+    while (tmp != NULL)
     {
-        printf("---- Node %d ----\nLexeme: %s\nType: %d\n\n", n, data->tokens->lex, data->tokens->type);
+        printf("---- Node %d ----\nLexeme: %s\nType: %d\n\n", n, tmp->lex, tmp->type);
         n++;
-        data->tokens = data->tokens->next;
+        tmp = tmp->next;
     }
 }

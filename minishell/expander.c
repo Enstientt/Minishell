@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /// COIUNTING THE SIZE OF NEW LEXEME
-int size_update(char *temp, char *value)
+int size_update(t_data *data, char *temp, char *value)
 {
     int i;
     int len;
@@ -12,31 +12,28 @@ int size_update(char *temp, char *value)
     {
         if (temp[i] == EXPAND_)
         {
-            while (temp[i] != ' ' && temp[i] != '\t')
+            while (temp[i] != ' ' && temp[i] != '\t' && temp[i] != data->token->type)
                 i++;
         }
         len++;
+        i++;
     }
     return (len + ft_strlen(value));
 }
 
 /// EX : This is the PWD var : $PWD from the env
 
-void    merge(t_data *data, t_tokens *tmp, char *value)
+void    merge(t_data *data, char *value)
 {
     char    *temp;
     int     i;
     int     j;
     int     v;
 
-    // temp = tmp->lex;
-    // free(tmp->lex);
-    printf("len: %zu\n", ft_strlen(tmp->lex));
-        exit(0);
-    printf("Old size: %zu\n", ft_strlen(temp));
-    printf("New size: %d\n", size_update(temp, value));
-    tmp->lex = malloc(sizeof(char) * size_update(temp, value));
-    if (!tmp->lex)
+    temp = data->token->lex;
+    free(data->token->lex);
+    data->token->lex = malloc(sizeof(char) * size_update(data, temp, value));
+    if (!data->token->lex)
     {
         free(temp);
         exit_error(data, 2, "Minishell: Allocation failed.");
@@ -52,9 +49,9 @@ void    merge(t_data *data, t_tokens *tmp, char *value)
             while (temp[i] != ' ' && temp[i] != '\t')
                 i++;
             while (value[v])
-                tmp->lex[j++] = value[v++];
+                data->token->lex[j++] = value[v++];
         }
-        tmp->lex[j++] = temp[i++];
+        data->token->lex[j++] = temp[i++];
     }
     free(temp);
 }
@@ -91,13 +88,13 @@ char    *get_var(t_data *data, char *buff)
     char    *var;
 
     i = 0;
-    while (buff[i] != ' ' && buff[i] != '\t')
+    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != data->token->type)
         i++;
     var = malloc(sizeof(char) * i);
     if (!var)
         exit_error(data, 2, "Minishell: Allocation failed.");
     i = 0;
-    while (buff[i] != ' ' && buff[i] != '\t')
+    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != data->token->type)
     {
         var[i] = buff[i];
         i++;
@@ -107,7 +104,7 @@ char    *get_var(t_data *data, char *buff)
 }
 
 // EX = $$$PATH
-int expander(t_data *data, char *buff, t_tokens *tmp)
+int expander(t_data *data, char *buff)
 {
     int     i;
     int     j;
@@ -122,10 +119,9 @@ int expander(t_data *data, char *buff, t_tokens *tmp)
     if (d == 1 && buff[i] != ' ' && buff[i] != '\t')
     {
         value = get_value(data, get_var(data, buff + i));
-        printf("%s\n", value);
         if (value != NULL)
-            merge(data, tmp, value);
-        printf("%s\n", tmp->lex);
+            merge(data, value);
+        printf("%s\n", data->token->lex);
     }
     return (i);
 }

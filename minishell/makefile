@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2022/12/31 16:15:46 by ahammout         ###   ########.fr        #
+#    Updated: 2023/01/01 17:48:28 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,10 @@ LIB = minishell.h
 NAME = minishell
 
 SRCS = 	main.c \
+		minishell.c \
 		utils.c \
-		first_lexer.c \
-		second_lexer.c \
+		lexer.c \
+		lexer_.c \
 		lexer_utils.c \
 		syntax_checker.c \
 		expander.c \

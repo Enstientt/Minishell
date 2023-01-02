@@ -8,20 +8,18 @@
 
 void    generate_err(t_data *data, char *input, char *err)
 {
-    printf("Minishell: %s: %s", input, err);
-    free(data->buffer);
-    while (data->tokens != NULL)
-    {
-        free(data->tokens->lex);
-        free(data->tokens);
-        data->tokens = data->tokens->next;
-    }
-    exit(EXIT_FAILURE);
+    printf("Minishell: %s: %s\n", input, err);
+    data->err = 1;
 }
 
-// Process 2 
 // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
-void    syntax_quotes(t_data *data, t_tokens *tmp, t_tokens *to_free)
+        /* 
+            +++++ get the absolute syntax of what between quotes; ++++++
+            Arguments : data ==> struct of data,  tmp ==> the token with type |Quote|,  size of Lexeme.
+        */
+        //abs_syntax(data, tmp, ft_strlen(tmp->lex));
+
+int syntax_quotes(t_data *data)
 {
     int i;
     int first;
@@ -30,51 +28,49 @@ void    syntax_quotes(t_data *data, t_tokens *tmp, t_tokens *to_free)
     i = 0;
     first = 0;
     last = 0;
-    while (tmp->lex[i])
+    while (data->token->lex[i] == data->token->type)
     {
-        while (tmp->lex[i++] == tmp->type)
-            first++;
-        while (tmp->lex[i] != tmp->type)
-        {
-            if (tmp->lex[i] == EXPAND_)
-                i += expander(data, tmp->lex + i, tmp);
-            i++;
-        }
-        while (tmp->lex[i] == tmp->type)
-            last++;
-        if (first != last)
-        {
-            free_tmp(to_free);
-            generate_err(data, tmp->lex, "inclosed quotes");
-        }
-        /// get the absolute syntax of what between quotes;
-        /// Arguments :
-        /// data ==> struct of data,  tmp ==> the token with type |Quote|,  size of Lexeme.
-        //abs_syntax(data, tmp, ft_strlen(tmp->lex));
-
-        free(to_free);
+        i++;
+        first++;
     }
+    while (data->token->lex[i] != data->token->type)
+    {
+        if (data->token->lex[i] == EXPAND_)
+        {
+            printf("EXPAND that variable!\n");
+            i += expander(data, data->token->lex + i);
+        }
+        i++;
+    }
+    while (data->token->lex[i++] == data->token->type)
+        last++;
+    if (first != last)
+    {
+        generate_err(data, data->token->lex, "inclosed quotes");
+        return (1);
+    }
+    return (0);
 }
 
+//// SYNTAX CHECKER : return a tokenzed linked list in seccuss;
 
-int syntax_checker (t_data *data)
+t_tokens    *syntax_checker (t_data *data)
 {
-    t_tokens    *tmp;
-    t_tokens    *to_free;
+    t_tokens    *ptr;
 
-    tmp = data->tokens;
-    to_free = tmp;
-    // while (tmp != NULL)
-    // {
-    //     if (tmp->type == SQUOTE || tmp->type == DQUOTE)
-    //         syntax_quotes(data, tmp, to_free);
-    //     else if (tmp->type == ESCAP)
-    //         syntax_quotes(data, tmp, to_free);
-    //     // else if (tmp->type == REDIN || tmp->type == APPEND || tmp->type == HEREDOC || tmp->type == SEPERATOR)
-    //     //     operator_syntax(data, tmp, to_free);
-    //     tmp  = tmp->next;
-    // }
-    // return (0);
-    printf("%s\n", tmp->lex);
-    exit(0);
+    ptr = data->token;
+    while (data->token != NULL)
+    {
+        if (data->token->type == SQUOTE || data->token->type == DQUOTE)
+            if (syntax_quotes(data))
+                return (ptr);
+        // else if (data->token->type == ESCAP)
+        //     syntax_quotes(data);
+        // else if (data->token->type == REDIN || data->token->type == APPEND 
+        //     || data->token->type == HEREDOC || data->token->type == SEPERATOR)
+        //     operator_syntax(data);
+        data->token  = data->token->next;
+    }
+    printf("Checked by Success.\n\n");
+    return (ptr);
 }
