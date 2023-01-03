@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/02 17:17:51 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:35:56 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int main(int ac, char **av, char **envp)
     {
         data.buffer = ft_strdup("");
         data.envp_ = ft_2strdup(envp);
+        data.token = NULL;
         av = NULL;
         while (1)
         {
@@ -35,17 +36,15 @@ int main(int ac, char **av, char **envp)
             while (buffer_size == 0)
             {
                 free(data.buffer);
-                data.buffer = readline("minishell $> ");
+                data.buffer = readline("minishell$> ");
                 buffer_size = ft_strlen(data.buffer);
             }
             data.token = lexer(&data);
             if (data.token)
             {
                 data.token = syntax_checker (&data);
-                exit(0);
                 if (data.token && data.err == 0)
                 {
-                    printf("non Error\n");
                     display_list(data.token);
                 }
             }

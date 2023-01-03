@@ -6,11 +6,25 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/01 13:24:07 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/03 14:58:38 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"minishell.h"
+
+int non_white(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (ft_isprint(str[i]))
+            return (1);
+        i++;
+    }
+    return (0);
+}
 
 char    **ft_2strdup(char **tab1)
 {

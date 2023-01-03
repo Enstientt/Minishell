@@ -116,4 +116,3 @@ int quotes(t_data *data, char *buff, char quote)
     data->token->type = quote;
     return(i);
 }
-

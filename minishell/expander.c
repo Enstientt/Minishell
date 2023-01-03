@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/// COIUNTING THE SIZE OF NEW LEXEME
 int size_update(t_data *data, char *temp, char *value)
 {
     int i;
@@ -21,8 +20,7 @@ int size_update(t_data *data, char *temp, char *value)
     return (len + ft_strlen(value));
 }
 
-/// EX : This is the PWD var : $PWD from the env
-
+/// EX : This is the PWD var : $PWD from the env.
 void    merge(t_data *data, char *value)
 {
     char    *temp;
@@ -46,14 +44,14 @@ void    merge(t_data *data, char *value)
     {
         if (temp[i] == EXPAND_)
         {
-            while (temp[i] != ' ' && temp[i] != '\t')
+            while (temp[i] != ' ' && temp[i] != '\t' && temp[i] != data->token->type)
                 i++;
             while (value[v])
                 data->token->lex[j++] = value[v++];
         }
         data->token->lex[j++] = temp[i++];
     }
-    free(temp);
+    data->token->lex[j] = '\0';
 }
 
 // Get_value : Re
@@ -76,7 +74,10 @@ char    *get_value(t_data *data, char *var)
             v++;
         }
         if (data->envp_[i][j++] == '=')
+        {
+            // free(var);
             return (data->envp_[i] + j);
+        }
         i++;
     }
     return (0);
@@ -109,19 +110,24 @@ int expander(t_data *data, char *buff)
     int     i;
     int     j;
     int     d;
+    char    *var;
     char    *value;
 
     j = 0;
     d = 0;
+    var = NULL;
     while (buff[d] == EXPAND_)
         d++;
     i = d;
     if (d == 1 && buff[i] != ' ' && buff[i] != '\t')
     {
-        value = get_value(data, get_var(data, buff + i));
+        var = get_var(data, buff + i);
+        value = get_value(data, var);
         if (value != NULL)
             merge(data, value);
-        printf("%s\n", data->token->lex);
+        /// if variable not exist.
+        /// don't dispay it
     }
+    free(var);
     return (i);
 }

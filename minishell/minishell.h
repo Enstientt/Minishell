@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/02 17:04:03 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:29:35 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ int         add_new_node (t_data *data);
         //////// SYNTAX CHECKER /////////// 
 t_tokens    *syntax_checker (t_data *data);
 int         expander (t_data *data, char *buff);
-void        gen_error (t_data *data, char *input, char *err);
+void        generate_err(t_data *data, char *input, char *err);
 
-        //////////// TOOLS ////////////////
+        //////////// TOOLS ///////////////
+int         non_white(char *str);
 void        free_data (t_data *data);
 void        exit_error (t_data *data, int option, char *err);
 char        **ft_2strdup (char **str);
