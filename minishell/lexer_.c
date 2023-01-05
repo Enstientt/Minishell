@@ -12,8 +12,6 @@ void    optype(int size, int type, t_tokens *token)
         token->type = HEREDOC;
     else if (type == PIPE)
         token->type = PIPE;
-    else if (type == SEPERATOR)
-        token->type = PIPE;
 }
 
 //// Function bellow return the size of lexem if option equal to 0 

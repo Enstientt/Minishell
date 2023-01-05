@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/05 11:41:40 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/05 19:19:15 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,10 @@
 enum{
     SQUOTE = '\'',
     DQUOTE = '\"',
-    ESCAP = '\\',
-    OPTION = '-',
     REDIN = '<',
     REDOUT = '>',
     APPEND = -124,
     HEREDOC = -120,
-    SEPERATOR = ';',
     PIPE = '|',
     EXPAND_ = '$',
     KEYWORD = -1,

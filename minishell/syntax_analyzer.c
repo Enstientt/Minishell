@@ -7,8 +7,13 @@
 
 int keyword_syntax(t_data *data);
 
+/// input: echo \ PWD variable: $PWD /  "LOGNAME var: $LOGNAME" ; ls -l
+/// Expected output: PWD variable: /Users/ahammout/Desktop/minishell / LOGNAME var: ahammout
+///                                /Users/ahammout/Desktop/minishell
+// int escap_syntax(t_data *data)
+// {
 
-int escap_syntax(t_data *data);
+// }
 
 
 // EX = $$$$$PATH
@@ -21,7 +26,7 @@ int expand_syntax(t_data *data)
         data->token->type = KEYWORD;
     return (0);
 }
-
+/// Escap character inside quotes: ODD number of escap char ==> ERR ; Even number of escap ==> Display half 
 int quotes_syntax(t_data *data)
 {
     int i;
@@ -64,8 +69,7 @@ t_tokens    *syntax_checker(t_data *data)
         else if (data->token->type == EXPAND_)
             expand_syntax(data);
         // else if (data->token->type == ESCAP)
-        //     if (escap_syntax(data))
-        //         return (ptr);
+        //     escap_syntax(data);
         // else if (data->token->type == REDIN || data->token->type == APPEND 
         //     || data->token->type == HEREDOC || data->token->type == SEPERATOR)
         //     operator_syntax(data);
