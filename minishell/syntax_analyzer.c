@@ -5,55 +5,24 @@
 
 #include "minishell.h"
 
+int keyword_syntax(t_data *data);
 
-void    generate_err(t_data *data, char *input, char *err)
+
+int escap_syntax(t_data *data);
+
+
+// EX = $$$$$PATH
+int expand_syntax(t_data *data)
 {
-    printf("Minishell: %s: %s\n", input, err);
-    data->err = 1;
+    int d_sign;
+
+    d_sign = expander(data, data->token->lex);
+    if (d_sign > 1)
+        data->token->type = KEYWORD;
+    return (0);
 }
 
-// "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
-
-void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
-{
-    char    *temp;
-    int     i;
-    int     j;
-
-    i = 0;
-    j = 0;
-    temp = data->token->lex;
-    free(data->token->lex);
-    data->token->lex = malloc(sizeof(char) * (lexem_len - n_quotes));
-    while (temp[i] == data->token->type)
-        i++;
-    while (temp[i] != data->token->type && temp[i] != '\0')
-        data->token->lex[j++] = temp[i++];
-    data->token->lex[j] = '\0';
-}
-
-
-int check_quotes(char *lexem, int type)
-{
-    int i;
-    int first;
-    int last;
-
-    first = 0;
-    last = 0;
-    while (lexem[first] == type)
-        first++;
-    i = first;
-    while (lexem[i] != type)
-        i++;
-    while (lexem[i++] == type)
-        last++;
-    if (first != last)
-        return (-1);
-    return (first + last);
-}
-
-int syntax_quotes(t_data *data)
+int quotes_syntax(t_data *data)
 {
     int i;
     int n_quotes;
@@ -68,7 +37,7 @@ int syntax_quotes(t_data *data)
     /// Expand part
     while (data->token->lex[i] == data->token->type)
         i++;
-    while (data->token->lex[i] != data->token->type)
+    while (data->token->lex[i] != data->token->type && data->token->lex[i] != '\0')
     {
         if (data->token->lex[i] == EXPAND_)
             i += expander(data, data->token->lex + i);
@@ -88,13 +57,23 @@ t_tokens    *syntax_checker(t_data *data)
     while (data->token != NULL)
     {
         if (data->token->type == SQUOTE || data->token->type == DQUOTE)
-            if (syntax_quotes(data))
+        {
+            if (quotes_syntax(data))
                 return (ptr);
+        }
+        else if (data->token->type == EXPAND_)
+            expand_syntax(data);
         // else if (data->token->type == ESCAP)
-        //     escap_syntax(data);
+        //     if (escap_syntax(data))
+        //         return (ptr);
         // else if (data->token->type == REDIN || data->token->type == APPEND 
         //     || data->token->type == HEREDOC || data->token->type == SEPERATOR)
         //     operator_syntax(data);
+        // else
+        // {
+        //     if (keyword_syntax(data))
+        //         return (ptr);
+        // }
         data->token  = data->token->next;
     }
     // printf("Checked by Success.\n\n");

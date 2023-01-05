@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/03 15:29:35 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/05 11:41:40 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ int         operator (t_data *data, char *buff, int type);
 void        optype (int size, int type, t_tokens *token);
 int         add_new_node (t_data *data);
 
-        //////// SYNTAX CHECKER /////////// 
+        //////// SYNTAX CHECKER ///////////
 t_tokens    *syntax_checker (t_data *data);
-int         expander (t_data *data, char *buff);
+int         check_quotes(char *lexem, int type);
+void        abs_syntax(t_data *data, int lexem_len, int n_quotes);
 void        generate_err(t_data *data, char *input, char *err);
+int         expander (t_data *data, char *buff);
 
         //////////// TOOLS ///////////////
 int         non_white(char *str);

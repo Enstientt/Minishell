@@ -6,14 +6,38 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/03 15:54:21 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/05 12:01:17 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
                 // PUTING WHAT BETWEEN QUOTES OR ESCAP ON LEX STRING.
                 // INCLUDE THE QUOTING ON THE LEX STRING.
 
+
+
 #include"minishell.h"
+
+// Buff = "$$$$PATH"
+
+int expand (t_data *data, char *buff)
+{
+    int i;
+    int len;
+
+    i = 0;
+    len = 0;
+    while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
+        len++;
+    data->token->lex = malloc (sizeof(char) * len);
+    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
+    {
+        data->token->lex[i] = buff[i];
+        i++;
+    }
+    data->token->lex[i] = '\0';
+    data->token->type = EXPAND_;
+    return (i);
+}
 
 t_tokens *lexer(t_data *data)
 {
@@ -116,7 +140,7 @@ t_tokens *lexer(t_data *data)
                         add_new_node(data);
                         data->token = data->token->next;
                     }
-                    i += operator(data, data->buffer + i, EXPAND_);
+                    i += expand (data, data->buffer + i);
                     add_node = 1;
                 }
                 else

@@ -11,11 +11,14 @@ int size_update(t_data *data, char *temp, char *value)
     {
         if (temp[i] == EXPAND_)
         {
-            while (temp[i] != ' ' && temp[i] != '\t' && temp[i] != data->token->type)
+            while (temp[i] != ' ' && temp[i] != '\t' && temp[i] != '\0' && temp[i] != data->token->type)
                 i++;
         }
-        len++;
-        i++;
+        if (temp[i] != '\0')
+        {
+            len++;
+            i++;
+        }
     }
     return (len + ft_strlen(value));
 }
