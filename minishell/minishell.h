@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/05 19:19:15 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:42:29 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ int         minishell(t_data *data);
 
 t_tokens    *lexer (t_data *data);
 int         quotes (t_data *data, char *buff, char quote);
-int         escap (t_data *data, char *buff);
+int         expand (t_data *data, char *buff);
 int         is_escap (char c);
 int         keyword (t_data *data, char *buff);
 int         operator (t_data *data, char *buff, int type);
 void        optype (int size, int type, t_tokens *token);
-int         add_new_node (t_data *data);
+int         is_space_or_tab(char *buffer);
+void        init_list(t_data *data);
+void        add_new_node (t_data *data);
 
         //////// SYNTAX CHECKER ///////////
 t_tokens    *syntax_checker (t_data *data);

@@ -38,6 +38,26 @@ int operator(t_data *data, char *buff, int type)
     return (i);
 }
 
+int expand (t_data *data, char *buff)
+{
+    int i;
+    int len;
+
+    i = 0;
+    len = 0;
+    while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
+        len++;
+    data->token->lex = malloc (sizeof(char) * len);
+    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
+    {
+        data->token->lex[i] = buff[i];
+        i++;
+    }
+    data->token->lex[i] = '\0';
+    data->token->type = EXPAND_;
+    return (i);
+}
+
 int keyword(t_data *data, char *buff)
 {
     int i;
@@ -60,29 +80,7 @@ int keyword(t_data *data, char *buff)
     return (i);
 }
 
-int escap(t_data *data, char *buff)
-{
-    int i;
-    int j;
-    int len;
-
-    i = 0;
-    j = 0;
-        len = 0;
-    while (is_escap(buff[len]))
-        len++;
-    data->token->lenght = len;
-    data->token->lex = malloc(sizeof(char) * len);
-    if (!data->token->lex)
-        exit_error(data, 2, "Minishell: Allocation failed.");
-    while (is_escap(buff[i]))
-        data->token->lex[j++] = buff[i++];
-    data->token->lex[j] = '\0';
-    data->token->type = ESCAP;
-    return (i);
-}
-
-int quotes(t_data *data, char *buff, char quote)
+int quotes(t_data *data, char *buff, char type)
 {
     int i;
     int j;
@@ -93,22 +91,22 @@ int quotes(t_data *data, char *buff, char quote)
     len = 0;
 
     // COUNTING THE SIZE FOR ALLOCATION DY
-    while (buff[len] == quote)
+    while (buff[len] == type)
         len++;
-    while (buff[len] != quote && buff[len] != '\0')
+    while (buff[len] != type && buff[len] != '\0')
         len++;
-    while (buff[len] == quote)
+    while (buff[len] == type)
         len++;
     data->token->lex = malloc(sizeof(char) * len);
     if (!data->token->lex)
         exit_error(data, 2, "Minishell: Allocation failed.");
-    while (buff[i] == quote)
+    while (buff[i] == type)
         data->token->lex[j++] = buff[i++];
-    while (buff[i] != quote && buff[i] != '\0')
+    while (buff[i] != type && buff[i] != '\0')
         data->token->lex[j++] = buff[i++];
-    while (buff[i] == quote)
+    while (buff[i] == type)
         data->token->lex[j++] = buff[i++];
     data->token->lex[j] = '\0';
-    data->token->type = quote;
+    data->token->type = type;
     return(i);
 }

@@ -57,7 +57,6 @@ void    merge(t_data *data, char *value)
     data->token->lex[j] = '\0';
 }
 
-// Get_value : Re
 char    *get_value(t_data *data, char *var)
 {
     int i;
@@ -77,10 +76,7 @@ char    *get_value(t_data *data, char *var)
             v++;
         }
         if (data->envp_[i][j++] == '=')
-        {
-            // free(var);
             return (data->envp_[i] + j);
-        }
         i++;
     }
     return (0);
@@ -124,6 +120,8 @@ int expander(t_data *data, char *buff)
     i = d;
     if (d == 1 && buff[i] != ' ' && buff[i] != '\t')
     {
+        // if (buff[i] == '?')
+        //     get_exit_status(data, buff + i);
         var = get_var(data, buff + i);
         value = get_value(data, var);
         if (value != NULL)

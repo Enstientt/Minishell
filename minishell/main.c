@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/05 10:59:17 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:16:38 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int main(int ac, char **av, char **envp)
                 data.buffer = readline("minishell$> ");
                 buffer_size = ft_strlen(data.buffer);
             }
+            add_history(data.buffer);
             data.token = lexer(&data);
             if (data.token)
             {

@@ -1,19 +1,9 @@
 /// Keywords types: 1-file ; 2-command ; 3-sentence.
 
-/// Quote : Double / Single quotes  & ESCAP
+/// Quote : Double / Single quotes
 /// Option : option with single op-Character / many op-characters
 
 #include "minishell.h"
-
-int keyword_syntax(t_data *data);
-
-/// input: echo \ PWD variable: $PWD /  "LOGNAME var: $LOGNAME" ; ls -l
-/// Expected output: PWD variable: /Users/ahammout/Desktop/minishell / LOGNAME var: ahammout
-///                                /Users/ahammout/Desktop/minishell
-// int escap_syntax(t_data *data)
-// {
-
-// }
 
 
 // EX = $$$$$PATH
@@ -53,7 +43,6 @@ int quotes_syntax(t_data *data)
 }
 
 //// SYNTAX CHECKER : return a tokenzed linked list in seccuss;
-
 t_tokens    *syntax_checker(t_data *data)
 {
     t_tokens    *ptr;
@@ -68,16 +57,6 @@ t_tokens    *syntax_checker(t_data *data)
         }
         else if (data->token->type == EXPAND_)
             expand_syntax(data);
-        // else if (data->token->type == ESCAP)
-        //     escap_syntax(data);
-        // else if (data->token->type == REDIN || data->token->type == APPEND 
-        //     || data->token->type == HEREDOC || data->token->type == SEPERATOR)
-        //     operator_syntax(data);
-        // else
-        // {
-        //     if (keyword_syntax(data))
-        //         return (ptr);
-        // }
         data->token  = data->token->next;
     }
     // printf("Checked by Success.\n\n");

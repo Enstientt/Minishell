@@ -6,11 +6,21 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/02 15:44:30 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/06 16:42:23 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int is_space_or_tab(char *buffer)
+{
+    int i;
+
+    i = 0;
+    while(buffer[i] == ' ' ||buffer[i] == '\t')
+        i++;
+    return (i);
+}
 
 int is_escap(char c)
 {
@@ -21,7 +31,7 @@ int is_escap(char c)
     return (0); 
 }
 
-int     add_new_node(t_data *data)
+void    add_new_node(t_data *data)
 {
     t_tokens    *node;
 
@@ -30,7 +40,14 @@ int     add_new_node(t_data *data)
         exit_error(data, 1, "Malloc: allocation failed.");
     node->next = NULL;
     data->token->next = node;
-    return (0);
+}
+
+void    init_list(t_data *data)
+{
+    data->token = malloc(sizeof(t_tokens));
+    if (!data->token)
+        exit_error(data, 1, "Minishell: Allocation failed.");
+    data->token->next = NULL;
 }
 
 void    display_list(t_tokens *token)
