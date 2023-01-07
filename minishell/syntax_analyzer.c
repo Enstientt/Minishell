@@ -5,7 +5,27 @@
 
 #include "minishell.h"
 
+// Valid syntax = echo "Hello, World" > file 
+// Valid syntax = echo ""
+// LAST TOKEN INVALID CASES: &&, ||, |, ;, >>, >, ~
+int analyze_redin_append(t_data *data)
+{
+    t_tokens    *tmp;
 
+    tmp = data->token;
+    printf("size of append: %d\n", data->token->lenght);
+    if (data->token->type == REDOUT)
+    {
+        tmp = tmp->next;
+        if (tmp->type == PIPE || tmp->type == SEMICOLONE 
+            || tmp->type == AND || tmp->type == TILD 
+            || tmp->type == ASTERISK)
+        {
+            generate_err(data, data->token->le)
+        }
+    }
+    exit(0);
+}
 // EX = $$$$$PATH
 int expand_syntax(t_data *data)
 {
@@ -26,7 +46,8 @@ int quotes_syntax(t_data *data)
     n_quotes = check_quotes(data->token->lex, data->token->type);
     if (n_quotes == -1)
     {
-        generate_err(data, data->token->lex, "inclosed quotes");
+        printf("Minishell: %s: %s\n", data->token->lex, "Inclosed quotes");
+        data->err = 1;
         return (1);
     }
     /// Expand part
@@ -43,11 +64,14 @@ int quotes_syntax(t_data *data)
 }
 
 //// SYNTAX CHECKER : return a tokenzed linked list in seccuss;
+/// Check For the first node; if it is an operator : generate error.
 t_tokens    *syntax_checker(t_data *data)
 {
     t_tokens    *ptr;
 
     ptr = data->token;
+    /// ANALYZE THE FIRST/LAST TOKENS : the first node deosn't need to be an operator;
+    // analyze_first_end(data);
     while (data->token != NULL)
     {
         if (data->token->type == SQUOTE || data->token->type == DQUOTE)
@@ -57,6 +81,12 @@ t_tokens    *syntax_checker(t_data *data)
         }
         else if (data->token->type == EXPAND_)
             expand_syntax(data);
+        else if (data->token->type == REDOUT || data->token->type == APPEND)
+        {
+            printf("Entered Here\n");
+            if (analyze_redin_append(data))
+                return (ptr);
+        }
         data->token  = data->token->next;
     }
     // printf("Checked by Success.\n\n");

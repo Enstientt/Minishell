@@ -1,11 +1,5 @@
 #include"minishell.h"
 
-void    generate_err(t_data *data, char *input, char *err)
-{
-    printf("Minishell: %s: %s\n", input, err);
-    data->err = 1;
-}
-
 // "Content is here"    |    [ "Content is here""       |      "Content is here ] Syntax error
 
 void    abs_syntax(t_data *data, int lexem_len, int n_quotes)

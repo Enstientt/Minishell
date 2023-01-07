@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/06 16:42:29 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:01:02 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <readline/history.h>
 
 /* add list of tokens characters*/
+// add operators : AND, OR, ASTERISK, SEMECOLE, TILD.
 
 enum{
     SQUOTE = '\'',
@@ -28,6 +29,10 @@ enum{
     REDOUT = '>',
     APPEND = -124,
     HEREDOC = -120,
+    SEMICOLONE = ';',
+    AND = '&',
+    TILD = '~',
+    ASTERISK = '*',
     PIPE = '|',
     EXPAND_ = '$',
     KEYWORD = -1,

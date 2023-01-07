@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/06 18:09:52 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:26:10 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int is_keyword(t_data *data, char *buffer, int *add_node)
     int i;
 
     i = 0;
-    if (buffer[i] != '\0')
+    if (buffer[i] != '\0' && buffer[i] != ' ' && buffer[i] != '\t')
     {
         if (*add_node)
         {
