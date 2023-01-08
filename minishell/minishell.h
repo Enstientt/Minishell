@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/07 18:01:02 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/08 16:50:10 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ enum{
     REDOUT = '>',
     APPEND = -124,
     HEREDOC = -120,
+    PIPE = '|',
+    EXPAND_ = '$',
     SEMICOLONE = ';',
     AND = '&',
     TILD = '~',
     ASTERISK = '*',
-    PIPE = '|',
-    EXPAND_ = '$',
     KEYWORD = -1,
 };
 
@@ -78,12 +78,20 @@ int         is_space_or_tab(char *buffer);
 void        init_list(t_data *data);
 void        add_new_node (t_data *data);
 
-        //////// SYNTAX CHECKER ///////////
+        //////// SYNTAX ANALYZER ///////////
 t_tokens    *syntax_checker (t_data *data);
+int         check_first_end(t_data *data);
+int         invalid_begin(t_tokens *token);
+int         invalid_end(t_tokens *token);
+int         expand_var(t_data *data);
+int         expander (t_data *data, char *buff);
+int         quotes_syntax(t_data *data);
 int         check_quotes(char *lexem, int type);
 void        abs_syntax(t_data *data, int lexem_len, int n_quotes);
-void        generate_err(t_data *data, char *input, char *err);
-int         expander (t_data *data, char *buff);
+int         check_rederections (t_data *data);
+
+        /////////////// PARCER ///////////////
+
 
         //////////// TOOLS ///////////////
 int         non_white(char *str);

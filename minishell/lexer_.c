@@ -91,20 +91,20 @@ int quotes(t_data *data, char *buff, char type)
     len = 0;
 
     // COUNTING THE SIZE FOR ALLOCATION DY
-    while (buff[len] == type)
+    while (buff[len] == type && ft_isprint(buff[len]))
         len++;
-    while (buff[len] != type && buff[len] != '\0')
+    while (buff[len] != type && ft_isprint(buff[len]))
         len++;
-    while (buff[len] == type)
+    while (buff[len] == type && ft_isprint(buff[len]))
         len++;
     data->token->lex = malloc(sizeof(char) * len);
     if (!data->token->lex)
         exit_error(data, 2, "Minishell: Allocation failed.");
-    while (buff[i] == type)
+    while (buff[i] == type && ft_isprint(buff[len]))
         data->token->lex[j++] = buff[i++];
-    while (buff[i] != type && buff[i] != '\0')
+    while (buff[i] != type && ft_isprint(buff[len]))
         data->token->lex[j++] = buff[i++];
-    while (buff[i] == type)
+    while (buff[i] == type && ft_isprint(buff[len]))
         data->token->lex[j++] = buff[i++];
     data->token->lex[j] = '\0';
     data->token->type = type;

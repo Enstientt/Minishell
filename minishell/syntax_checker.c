@@ -5,38 +5,31 @@
 
 #include "minishell.h"
 
-// Valid syntax = echo "Hello, World" > file 
-// Valid syntax = echo ""
-// LAST TOKEN INVALID CASES: &&, ||, |, ;, >>, >, ~
-int analyze_redin_append(t_data *data)
-{
-    t_tokens    *tmp;
+/// REDOUT : INVALID FILE FORMAT ==> INVALID FILES NAME : && , || , 
 
-    tmp = data->token;
-    printf("size of append: %d\n", data->token->lenght);
-    if (data->token->type == REDOUT)
+// int check_pipe (t_data *data)
+// {
+
+// }
+
+/// >
+int check_rederections (t_data *data)
+{
+    t_tokens    *token;
+
+    token = data->token;
+    /// Check The file Name : a non valid fie whose begin with a metacharacter
+    if (token->lenght > 2)
+        data->err = 1;
+    token = token->next;
+    if (invalid_end(token))
     {
-        tmp = tmp->next;
-        if (tmp->type == PIPE || tmp->type == SEMICOLONE 
-            || tmp->type == AND || tmp->type == TILD 
-            || tmp->type == ASTERISK)
-        {
-            generate_err(data, data->token->le)
-        }
+        data->err = 1;
+        return (1);
     }
-    exit(0);
-}
-// EX = $$$$$PATH
-int expand_syntax(t_data *data)
-{
-    int d_sign;
-
-    d_sign = expander(data, data->token->lex);
-    if (d_sign > 1)
-        data->token->type = KEYWORD;
     return (0);
 }
-/// Escap character inside quotes: ODD number of escap char ==> ERR ; Even number of escap ==> Display half 
+
 int quotes_syntax(t_data *data)
 {
     int i;
@@ -63,6 +56,26 @@ int quotes_syntax(t_data *data)
     return (0);
 }
 
+int check_first_end(t_data *data)
+{
+    t_tokens    *token;
+
+    token = data->token;
+    if (invalid_begin(token))
+    {
+        data->err = 1;
+        return (1);
+    }
+    while (token->next != NULL)
+        token = token->next;
+    if (invalid_end(token))
+    {
+        data->err = 1;
+        return (1);
+    }
+    return (0);
+}
+
 //// SYNTAX CHECKER : return a tokenzed linked list in seccuss;
 /// Check For the first node; if it is an operator : generate error.
 t_tokens    *syntax_checker(t_data *data)
@@ -70,21 +83,25 @@ t_tokens    *syntax_checker(t_data *data)
     t_tokens    *ptr;
 
     ptr = data->token;
-    /// ANALYZE THE FIRST/LAST TOKENS : the first node deosn't need to be an operator;
-    // analyze_first_end(data);
+    if (check_first_end(data))
+        return (ptr);
     while (data->token != NULL)
     {
-        if (data->token->type == SQUOTE || data->token->type == DQUOTE)
+        if (data->token->type == EXPAND_)
+            expand_var(data);
+        else if (data->token->type == SQUOTE || data->token->type == DQUOTE)
         {
             if (quotes_syntax(data))
                 return (ptr);
         }
-        else if (data->token->type == EXPAND_)
-            expand_syntax(data);
+        // else if (data->token->type == PIPE)
+        // {
+        //     if (check_pipe (data))
+        //         return (ptr);
+        // }
         else if (data->token->type == REDOUT || data->token->type == APPEND)
         {
-            printf("Entered Here\n");
-            if (analyze_redin_append(data))
+            if (check_rederections (data))
                 return (ptr);
         }
         data->token  = data->token->next;
