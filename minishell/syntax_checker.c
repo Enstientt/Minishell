@@ -13,6 +13,15 @@
 // }
 
 /// >
+
+int is_metecharacter(int type)
+{
+    if (type == REDIN || type == REDOUT
+        || type == APPEND || type == HEREDOC
+        || type == PIPE)
+        return (1);
+    return (0);
+}
 int check_rederections (t_data *data)
 {
     t_tokens    *token;
@@ -66,12 +75,17 @@ int check_first_end(t_data *data)
         data->err = 1;
         return (1);
     }
-    while (token->next != NULL)
+    while (is_metecharacter(token->type) == 0)
         token = token->next;
-    if (invalid_end(token))
+    /// while non metecharacter token go to next node, if node = metachar
+    /// check if it is the last node, if yes ==>disp err of `newline'. no ==> stop
+    if (token->next == NULL)
     {
-        data->err = 1;
-        return (1);
+        if (invalid_end(token))
+        {
+            data->err = 1;
+            return (1);
+        }
     }
     return (0);
 }

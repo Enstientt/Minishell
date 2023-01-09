@@ -3,7 +3,6 @@
 
 /// CMD INVALID BEGIN : & , ; , | , ||
 
-
 int invalid_begin(t_tokens *token)
 {
     if ((token->lex[0] == PIPE && token->lex[1] == PIPE) 
@@ -21,7 +20,7 @@ int invalid_begin(t_tokens *token)
     return (0);
 }
 
-/// CMD INVALID END : & , ; , > , >> , < , << , | , || , &&
+/// CMD INVALID END : & , ; , > , >> , < , << , | , || , && , ( , )
 /// specifieng error: bash-3.2$ echo "fdsvsv" > >
 //                    bash: syntax error near unexpected token `>'    
 
@@ -38,7 +37,7 @@ int invalid_end(t_tokens *token)
     else if (token->lex[0] == REDIN || token->lex[0] == REDOUT 
             || token->lex[0] == AND || token->lex[0] == PIPE)
     {
-        printf("Minishell: syntax error near unexpected token `%c'\n", token->lex[0]);
+        printf("Minishell: syntax error near unexpected token `newline'\n");
         return (1);
     }
     return (0);
