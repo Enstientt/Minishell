@@ -80,24 +80,48 @@ int keyword(t_data *data, char *buff)
     return (i);
 }
 
+// echo "" | ls -l | touch file | echo "This on The file" > file
+// "union quoted "union quoted "Union Quoted "Union quoted""""    [W]
+//  echo "hello, World "Here is again "Expand this $PWD UNION  """""   [W]
+
+int non_empty(char *buff, char type)
+{
+    int i;
+
+    i = 0;
+    while (buff[i] )
+    {
+        if (buff[i] == type)
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+int quoted_size(char *buff)
+{
+    int len;
+    int i;
+
+    len = 0;
+    i = 0;
+    while (buff[len])
+    {
+        if (end_of_quote(buff + len))
+            return (len);
+        len++;
+    }
+    return (len);
+}
+
 int quotes(t_data *data, char *buff, char type)
 {
     int i;
     int j;
-    int len;
 
     i = 0;
     j = 0;
-    len = 0;
-
-    // COUNTING THE SIZE FOR ALLOCATION DY
-    while (buff[len] == type)
-        len++;
-    while (buff[len] != type)
-        len++;
-    while (buff[len] == type)
-        len++;
-    data->token->lex = malloc(sizeof(char) * len);
+    data->token->lex = malloc(sizeof(char) * quoted_size(buff));
     if (!data->token->lex)
         exit_error(data, 2, "Minishell: Allocation failed.");
     while (buff[i] == type)

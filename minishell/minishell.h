@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/08 16:50:10 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:07:00 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ t_tokens    *syntax_checker (t_data *data);
 int         check_first_end(t_data *data);
 int         invalid_begin(t_tokens *token);
 int         invalid_end(t_tokens *token);
+int         invalid_file(t_tokens *token);
 int         expand_var(t_data *data);
 int         expander (t_data *data, char *buff);
 int         quotes_syntax(t_data *data);
 int         check_quotes(char *lexem, int type);
 void        abs_syntax(t_data *data, int lexem_len, int n_quotes);
-int         check_rederections (t_data *data);
+int         check_redirections (t_data *data);
 
         /////////////// PARCER ///////////////
 

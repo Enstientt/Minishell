@@ -6,11 +6,17 @@
 #include "minishell.h"
 
 /// REDOUT : INVALID FILE FORMAT ==> INVALID FILES NAME : && , || , 
-
-// int check_pipe (t_data *data)
-// {
-
-// }
+// PIPE:   INVALID FORMAT: || .
+int check_pipe (t_data *data)
+{
+    if (data->token->lenght > 1 || data->token->next == NULL)
+    {
+        printf("Minishell: syntax error near unexpected token `%c'\n", data->token->lex[0]);
+        data->err = 1;
+        return (1);
+    }
+    return (0);
+}
 
 /// >
 
@@ -22,7 +28,7 @@ int is_metecharacter(int type)
         return (1);
     return (0);
 }
-int check_rederections (t_data *data)
+int check_redirections (t_data *data)
 {
     t_tokens    *token;
 
@@ -31,13 +37,20 @@ int check_rederections (t_data *data)
     if (token->lenght > 2)
         data->err = 1;
     token = token->next;
-    if (invalid_end(token))
+    if (token == NULL)
+    {
+        printf("Minishell: syntax error near unexpected token `newline'\n");
+        data->err = 1;
+        return (1);
+    }
+    else if (invalid_file(token))
     {
         data->err = 1;
         return (1);
     }
     return (0);
 }
+//  echo "" | ls -l | touch file | echo "This on The file" > file 
 
 int quotes_syntax(t_data *data)
 {
@@ -75,10 +88,8 @@ int check_first_end(t_data *data)
         data->err = 1;
         return (1);
     }
-    while (is_metecharacter(token->type) == 0)
+    while (is_metecharacter(token->type) == 0 && token->next != NULL)
         token = token->next;
-    /// while non metecharacter token go to next node, if node = metachar
-    /// check if it is the last node, if yes ==>disp err of `newline'. no ==> stop
     if (token->next == NULL)
     {
         if (invalid_end(token))
@@ -92,6 +103,8 @@ int check_first_end(t_data *data)
 
 //// SYNTAX CHECKER : return a tokenzed linked list in seccuss;
 /// Check For the first node; if it is an operator : generate error.
+
+/// pipe: ehco "put this ono the file" > file | cat -e file | ls -l
 t_tokens    *syntax_checker(t_data *data)
 {
     t_tokens    *ptr;
@@ -108,14 +121,14 @@ t_tokens    *syntax_checker(t_data *data)
             if (quotes_syntax(data))
                 return (ptr);
         }
-        // else if (data->token->type == PIPE)
-        // {
-        //     if (check_pipe (data))
-        //         return (ptr);
-        // }
+        else if (data->token->type == PIPE)
+        {
+            if (check_pipe (data))
+                return (ptr);
+        }
         else if (data->token->type == REDOUT || data->token->type == APPEND)
         {
-            if (check_rederections (data))
+            if (check_redirections (data))
                 return (ptr);
         }
         data->token  = data->token->next;

@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/09 12:01:02 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/10 14:57:08 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int main(int ac, char **av, char **envp)
             }
             add_history(data.buffer);
             data.token = lexer(&data);
+            display_list(data.token);
+            exit (0);
             if (data.token)
             {
                 data.token = syntax_checker (&data);

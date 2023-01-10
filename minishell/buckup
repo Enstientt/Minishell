@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/03 12:43:49 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:58:41 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,4 +200,45 @@ int syntax_quotes(t_data *data)
         return (1);
     }
     return (0);
+}
+
+
+
+
+
+///// OLD QUOTED LEXER //////
+
+int quoted_size(char *buff, char type)
+{
+    int len;
+
+    len = 0;
+    while (buff[len] == type)
+        len++;
+    while (buff[len] != type)
+        len++;
+    while (buff[len] == type)
+        len++;
+    return (len);
+}
+
+int quotes(t_data *data, char *buff, char type)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    data->token->lex = malloc(sizeof(char) * quoted_size(buff, type));
+    if (!data->token->lex)
+        exit_error(data, 2, "Minishell: Allocation failed.");
+    while (buff[i] == type)
+        data->token->lex[j++] = buff[i++];
+    while (buff[i] != type)
+        data->token->lex[j++] = buff[i++];
+    while (buff[i] == type)
+        data->token->lex[j++] = buff[i++];
+    data->token->lex[j] = '\0';
+    data->token->type = type;
+    return(i);
 }
