@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/10 13:07:00 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:07:32 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ int         minishell(t_data *data);
         /////////// LEXER //////////////
 
 t_tokens    *lexer (t_data *data);
+int         is_quoted(t_data *data, char *buffer, int *add_node);
+int         is_redirection(t_data *data, char *buffer, int *add_node);
+int         is_pipe (t_data *data, char *buffer, int *add_node);
+int         is_keyword(t_data *data, char *buffer, int *add_node);
 int         quotes (t_data *data, char *buff, char quote);
 int         expand (t_data *data, char *buff);
 int         is_escap (char c);
@@ -76,6 +80,7 @@ int         operator (t_data *data, char *buff, int type);
 void        optype (int size, int type, t_tokens *token);
 int         is_space_or_tab(char *buffer);
 void        init_list(t_data *data);
+int         non_operator(char c);
 void        add_new_node (t_data *data);
 
         //////// SYNTAX ANALYZER ///////////
@@ -85,6 +90,7 @@ int         invalid_begin(t_tokens *token);
 int         invalid_end(t_tokens *token);
 int         invalid_file(t_tokens *token);
 int         expand_var(t_data *data);
+void        check_keyword(t_data *data);
 int         expander (t_data *data, char *buff);
 int         quotes_syntax(t_data *data);
 int         check_quotes(char *lexem, int type);

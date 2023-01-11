@@ -39,7 +39,6 @@ void    merge(t_data *data, char *value)
         free(temp);
         exit_error(data, 2, "Minishell: Allocation failed.");
     }
-    /// FILL THE NEW LEXEM
     i = 0;
     j = 0;
     v = 0;
@@ -47,12 +46,13 @@ void    merge(t_data *data, char *value)
     {
         if (temp[i] == EXPAND_)
         {
-            while (temp[i] != ' ' && temp[i] != '\t' && temp[i] != data->token->type)
+            while (temp[i] != ' ' && temp[i] != '\t' &&  temp[i] != '\0' && temp[i] != data->token->type)
                 i++;
             while (value[v])
                 data->token->lex[j++] = value[v++];
         }
-        data->token->lex[j++] = temp[i++];
+        if (temp[i] != '\0')
+            data->token->lex[j++] = temp[i++];
     }
     data->token->lex[j] = '\0';
 }
@@ -88,13 +88,13 @@ char    *get_var(t_data *data, char *buff)
     char    *var;
 
     i = 0;
-    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != data->token->type)
+    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0' && buff[i] != data->token->type)
         i++;
     var = malloc(sizeof(char) * i);
     if (!var)
         exit_error(data, 2, "Minishell: Allocation failed.");
     i = 0;
-    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != data->token->type)
+    while (buff[i] != ' ' && buff[i] != '\t' &&  buff[i] != '\0' && buff[i] != data->token->type)
     {
         var[i] = buff[i];
         i++;
@@ -102,20 +102,20 @@ char    *get_var(t_data *data, char *buff)
     var[i] = '\0';
     return (var);
 }
-
+// EXPANDTHIS$HOME
 // EX = $$$PATH
-int expander(t_data *data, char *buff)
+int expander (t_data *data, char *buff)
 {
     int     i;
-    int     j;
     int     d;
     char    *var;
     char    *value;
 
-    j = 0;
     d = 0;
     var = NULL;
-    while (buff[d] == EXPAND_)
+    while (buff[i] != EXPAND_)
+        i++;
+    while (buff[i++] == EXPAND_) 
         d++;
     i = d;
     if (d == 1 && buff[i] != ' ' && buff[i] != '\t')

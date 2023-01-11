@@ -18,8 +18,6 @@ int check_pipe (t_data *data)
     return (0);
 }
 
-/// >
-
 int is_metecharacter(int type)
 {
     if (type == REDIN || type == REDOUT
@@ -28,6 +26,7 @@ int is_metecharacter(int type)
         return (1);
     return (0);
 }
+
 int check_redirections (t_data *data)
 {
     t_tokens    *token;
@@ -48,33 +47,6 @@ int check_redirections (t_data *data)
         data->err = 1;
         return (1);
     }
-    return (0);
-}
-//  echo "" | ls -l | touch file | echo "This on The file" > file 
-
-int quotes_syntax(t_data *data)
-{
-    int i;
-    int n_quotes;
-
-    i = 0;
-    n_quotes = check_quotes(data->token->lex, data->token->type);
-    if (n_quotes == -1)
-    {
-        printf("Minishell: %s: %s\n", data->token->lex, "Inclosed quotes");
-        data->err = 1;
-        return (1);
-    }
-    /// Expand part
-    while (data->token->lex[i] == data->token->type)
-        i++;
-    while (data->token->lex[i] != data->token->type && data->token->lex[i] != '\0')
-    {
-        if (data->token->lex[i] == EXPAND_)
-            i += expander(data, data->token->lex + i);
-        i++;
-    }
-    abs_syntax(data, ft_strlen(data->token->lex), n_quotes);
     return (0);
 }
 
@@ -114,8 +86,8 @@ t_tokens    *syntax_checker(t_data *data)
         return (ptr);
     while (data->token != NULL)
     {
-        if (data->token->type == EXPAND_)
-            expand_var(data);
+        if (data->token->type == KEYWORD)
+            check_keyword(data);
         else if (data->token->type == SQUOTE || data->token->type == DQUOTE)
         {
             if (quotes_syntax(data))

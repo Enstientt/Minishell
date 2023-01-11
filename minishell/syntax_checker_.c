@@ -62,62 +62,15 @@ int invalid_end(t_tokens *token)
     return (0);
 }
 
-void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
-{
-    char    *temp;
-    int     i;
-    int     j;
-
-    i = 0;
-    j = 0;
-    temp = data->token->lex;
-    free(data->token->lex);
-    if (lexem_len - n_quotes == 0)
-        data->token->lex = NULL;
-    else
-    {
-        data->token->lex = malloc(sizeof(char) * (lexem_len - n_quotes));
-        if (!data->token->lex)
-            exit_error(data, 2, "Minishell: Allocation failed.");
-        while (temp[i] == data->token->type)
-            i++;
-        while (temp[i] != data->token->type && temp[i] != '\0')
-            data->token->lex[j++] = temp[i++];
-        data->token->lex[j] = '\0';
-    }
-}
-
-int check_quotes(char *lexem, int type)
+void    check_keyword(t_data *data)
 {
     int i;
-    int first;
-    int last;
-    int content;
 
-    first = 0;
-    last = 0;
-    content = 0;
-    while (lexem[first] == type)
-        first++;
-    i = first;
-    while (lexem[i] != type && lexem[i] != '\0')
+    i = 0;
+    while (data->token->lex[i])
     {
-        content++;
+        if (data->token->lex[i] == EXPAND_)
+            expander(data, data->token->lex);
         i++;
     }
-    while (lexem[i++] == type)
-        last++;
-    if (first != last && content > 1)
-        return (-1);
-    return (first + last);
-}
-
-int expand_var(t_data *data)
-{
-    int d_sign;
-
-    d_sign = expander(data, data->token->lex);
-    if (d_sign > 1)
-        data->token->type = KEYWORD;
-    return (0);
 }

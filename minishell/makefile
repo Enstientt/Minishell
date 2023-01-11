@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/01/08 11:37:34 by ahammout         ###   ########.fr        #
+#    Updated: 2023/01/10 19:01:50 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS = 	main.c \
 		lexer_utils.c \
 		syntax_checker.c \
 		syntax_checker_.c \
+		quotes.c \
 		expander.c \
 
 OBJS = $(SRCS:.c=.o)

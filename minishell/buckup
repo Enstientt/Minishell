@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/10 16:58:41 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:07:50 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,4 +241,112 @@ int quotes(t_data *data, char *buff, char type)
     data->token->lex[j] = '\0';
     data->token->type = type;
     return(i);
+}
+
+
+int non_empty(char *buff, char type)
+{
+    int i;
+
+    i = 0;
+    while (buff[i] )
+    {
+        if (buff[i] == type)
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+int check_quotes(char *lexem, int type)
+{
+    int i;
+    int first;
+    int last;
+    int content;
+
+    first = 0;
+    last = 0;
+    content = 0;
+    while (lexem[first] == type)
+        first++;
+    i = first;
+    while (lexem[i] != type && lexem[i] != '\0')
+    {
+        content++;
+        i++;
+    }
+    while (lexem[i++] == type)
+        last++;
+    if (first != last && content > 1)
+        return (-1);
+    return (first + last);
+}
+
+
+// echo "" | ls -l | touch file | echo "This on The file" > file
+// "union quoted "union quoted "Union Quoted "Union quoted""""    [W]
+//  echo "hello, World "Here is again "Expand this $PWD UNION  """""   [W]
+
+// int end_of_quote(char *buff, char type)
+// {
+//     int i;
+//     int q;
+
+//     i = 0;
+//     q = 0;
+//     while (q < 2)
+//     {
+//         if (buff[i] == type)
+//             q++;
+//         i++;  
+//     }
+//     return (i);
+// }
+
+
+
+// int quotes(t_data *data, char *buff, char type)
+// {
+//     int i;
+//     int j;
+
+//     i = 0;
+//     j = 0;
+//     data->token->lex = malloc(sizeof(char) * quoted_size(buff, type));
+//     if (!data->token->lex)
+//         exit_error(data, 2, "Minishell: Allocation failed.");
+//     while (buff[i])
+//     {
+//         if (end_of_quote(buff + i, type))
+//             break;
+//         data->token->lex[j++] = buff[i++];
+//     }
+//     data->token->lex[j] = '\0';
+//     data->token->type = type;
+//     printf("Lexem +=> %s\n", data->token->lex);
+//     exit (0);
+//     return(i);
+// }
+
+int expand (t_data *data, char *buff)
+{
+    int i;
+    int len;
+
+    i = 0;
+    len = 0;
+    while (non_operator(buff[len]) && buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
+        len++;
+    data->token->lex = malloc (sizeof(char) * len);
+    if (!data->token->lex)
+        exit_error(data, 2, "Minishell: Allocation failed.");
+    while (non_operator(buff[i]) && buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
+    {
+        data->token->lex[i] = buff[i];
+        i++;
+    }
+    data->token->lex[i] = '\0';
+    data->token->type = EXPAND_;
+    return (i);
 }
