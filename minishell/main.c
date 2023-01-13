@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/11 17:43:17 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:26:03 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 int main(int ac, char **av, char **envp)
 {
     t_data  data;
-    int     buffer_size;
+    // int     buffer_size;
 
     if (ac == 1)
     {
@@ -29,30 +29,31 @@ int main(int ac, char **av, char **envp)
         data.envp_ = ft_2strdup(envp);
         data.token = NULL;
         av = NULL;
-        while (1)
-        {
-            buffer_size = 0;
-            data.err = 0;
-            while (buffer_size == 0)
-            {
-                free(data.buffer);
-                data.buffer = readline("minishell$> ");
-                buffer_size = ft_strlen(data.buffer);
-            }
-            add_history(data.buffer);
-            data.token = lexer(&data);
-            if (data.token)
-            {
-                data.token = syntax_checker (&data);
-                if (data.token && data.err == 0)
-                {
-                    printf("Error status: [ %d ]\n", data.err);
-                    display_list (data.token);
-                }
-            }
-            free_data(&data);
-        }
     }
-    // expander(&data, "$PWD from the env", NULL);
+    //     while (1)
+    //     {
+    //         buffer_size = 0;
+    //         data.err = 0;
+    //         while (buffer_size == 0)
+    //         {
+    //             free(data.buffer);
+    //             data.buffer = readline("minishell$> ");
+    //             buffer_size = ft_strlen(data.buffer);
+    //         }
+    //         add_history(data.buffer);
+    //         data.token = lexer(&data);
+    //         if (data.token)
+    //         {
+    //             data.token = syntax_checker (&data);
+    //             if (data.token && data.err == 0)
+    //             {
+    //                 printf("Error status: [ %d ]\n", data.err);
+    //                 display_list (data.token);
+    //             }
+    //         }
+    //         free_data(&data);
+    //     }
+    // }
+    expander(&data, "$saxasxa");
     return(0);
 }

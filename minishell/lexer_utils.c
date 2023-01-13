@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/06 16:42:23 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:13:57 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int is_space_or_tab(char *buffer)
     int i;
 
     i = 0;
-    while(buffer[i] == ' ' ||buffer[i] == '\t')
+    while(buffer[i] == ' ' || buffer[i] == '\t')
         i++;
     return (i);
 }

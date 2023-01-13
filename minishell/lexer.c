@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/11 18:09:10 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:36:22 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,9 @@ t_tokens *lexer(t_data *data)
                 i += is_quoted (data, data->buffer + i, &add_node);
                 i += is_redirection (data, data->buffer + i, &add_node);
                 i += is_pipe (data, data->buffer + i, &add_node);
-                i += is_keyword(data, data->buffer + i, &add_node);
+                i += is_keyword (data, data->buffer + i, &add_node);
             }
         }
     }
     return (ptr);
 }
-
-/// Freeing the buffer when finish using it / affecting it by NULL.

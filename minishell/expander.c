@@ -33,6 +33,8 @@ void    merge(t_data *data, char *value)
 
     temp = data->token->lex;
     free(data->token->lex);
+    exit (0);
+    printf("NEW SIZE :%d \n", size_update(data, temp, value));
     data->token->lex = malloc(sizeof(char) * size_update(data, temp, value));
     if (!data->token->lex)
     {
@@ -102,33 +104,116 @@ char    *get_var(t_data *data, char *buff)
     var[i] = '\0';
     return (var);
 }
-// EXPANDTHIS$HOME
-// EX = $$$PATH
+
+
+// int expander (t_data *data, char *buff)
+// {
+//     int     d;
+//     int     i;
+//     char    *var;
+//     char    *value;
+
+//     d = 0;
+//     var = NULL;
+//     while (buff[d] == EXPAND_)
+//         d++;
+//     if (buff[d] != ' ' && buff[d] != '\t')
+//     {
+//         // if (buff[i] == '?')
+//         //     get_exit_status(data, buff + i);
+//         var = get_var (data, buff + d);
+//         value = get_value (data, var);
+//         if (value != NULL)
+//             merge(data, value);
+//         /// if variable not exist.
+//         /// don't dispay it
+//     }
+//     free  (var);
+//     return (i);
+// }
+
+// void    quotes_exp(char *buff);
+
+/*
+    $$$$@
+*/
+
+// int is_silent(char c)
+// {
+//     if (ft_isdigit(c) || c == '@')
+//         return (1);
+//     return (0);
+// }
+
+// void    behind_silent(char *buff, int d)
+// {
+//     int i;
+
+//     i = 1;
+//     while (buff[i])
+//     {
+        
+//     }
+// }
+
+
+
+int update_size(int size_pid, char *temp)
+{
+    int d;
+    int i;
+
+    while (temp[i])
+    {
+        if (temp[i++] == EXPAND_)
+            d++;
+        i++;
+    }
+}
+
+int handle_dolar(t_data *data, int index, char pid)
+{
+    char    *temp;
+    int     i;
+
+    i = 0;
+    temp = data->token->lex;
+    free(data->token->lex);
+    data->token->lex = malloc(sizeof (char) * update_size(ft_strlen(pid), temp));
+    while (temp[i])
+    {
+        
+    }
+
+}
+
+//// lexem = adfsfsfrfer$$$$$$@HOME.
+
 int expander (t_data *data, char *buff)
 {
-    int     i;
     int     d;
+    char    *pid;
     char    *var;
     char    *value;
 
     d = 0;
     var = NULL;
-    while (buff[i] != EXPAND_)
-        i++;
-    while (buff[i++] == EXPAND_) 
-        d++;
-    i = d;
-    if (d == 1 && buff[i] != ' ' && buff[i] != '\t')
-    {
-        // if (buff[i] == '?')
-        //     get_exit_status(data, buff + i);
-        var = get_var(data, buff + i);
-        value = get_value(data, var);
-        if (value != NULL)
-            merge(data, value);
-        /// if variable not exist.
-        /// don't dispay it
-    }
-    free(var);
-    return (i);
+    value = NULL;
+    pid = ft_itoa(getppid());
+    d += handle_dolar (data, d, pid);
+    // // Check if expanded.
+    // // $$$HOME_
+    // if (d % 2 != 0 && buff[d] != '\0')
+    // {
+    //     // CASE OF '@' & NUMBERS
+    //     if (is_silent(buff[d]))
+    //         behind_silent(data, buff + d);
+    //     // ALPHABETIC CASE
+    //     else
+    //     {
+            
+    //     }
+    // }
+
+    exit (0);  
 }

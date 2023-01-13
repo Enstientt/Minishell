@@ -14,8 +14,6 @@ void    optype(int size, int type, t_tokens *token)
         token->type = PIPE;
 }
 
-//// Function bellow return the size of lexem if option equal to 0 
-///  | otherwise fill the lexem and return index [index = lenght].
 int operator (t_data *data, char *buff, int type)
 {
     int i;
@@ -53,7 +51,7 @@ int keyword(t_data *data, char *buff)
     data->token->lex = malloc(sizeof(char) * len);
     if (!data->token->lex)
         exit_error(data, 2, "Minishell: Allocation failed.");
-    while (buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
+    while (non_operator(buff[i]) && buff[i] != ' ' && buff[i] != '\t' && buff[i] != '\0')
         data->token->lex[j++] = buff[i++];
     data->token->lex[j] = '\0';
     data->token->type = KEYWORD;
@@ -75,7 +73,6 @@ int quoted_size (char *buff, char type)
     }
     return (i);
 }
-/// EX = "hello"
 
 int quotes(t_data *data, char *buff, char type)
 {

@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/11 18:07:32 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/13 18:37:44 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<unistd.h>
 #include"libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>

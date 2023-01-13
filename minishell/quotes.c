@@ -61,11 +61,12 @@ int quotes_syntax(t_data *data)
         data->err = 1;
         return (1);
     }
+
     /// Expand part
     while (data->token->lex[i])
     {
-        if (data->token->lex[i] == EXPAND_)
-            i += expander(data, data->token->lex + i);
+        // if (data->token->lex[i] == EXPAND_)
+        //     i += expander (data, data->token->lex + i);
         i++;
     }
     // abs_syntax(data, ft_strlen(data->token->lex), n_quotes);
