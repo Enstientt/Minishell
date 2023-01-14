@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/13 15:42:31 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:04:43 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,3 +364,15 @@ int expand (t_data *data, char *buff)
 // $[any number]HOME ===> LET & AND NOT EXPAND.
 // $NON_DISPLAY ==> VAR NOT EXIST.
 // $HOME. [V]
+
+
+    //     d = 0;
+    //     // CASE OF '@' & NUMBERS
+    //     if (is_silent(buff[d]))
+    //         non_expand (data, pid);
+    //     // ALPHABETIC CASE
+
+
+// $$$HOME_  | ODD CASE   | EXPAND || SILENT.
+
+    dolars = malloc(sizeof (char) * ((d / 2) * ft_strlen(pid)));

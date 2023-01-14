@@ -138,82 +138,67 @@ char    *get_var(t_data *data, char *buff)
     $$$$@
 */
 
-// int is_silent(char c)
-// {
-//     if (ft_isdigit(c) || c == '@')
-//         return (1);
-//     return (0);
-// }
 
-// void    behind_silent(char *buff, int d)
-// {
-//     int i;
-
-//     i = 1;
-//     while (buff[i])
-//     {
-        
-//     }
-// }
-
-
-
-int update_size(int size_pid, char *temp)
+// //// lexem = adfsfsfrfer$$$$$$@HOME.
+// //// Buffer = $$$$$$@PWD
+int is_silent(char c)
 {
-    int d;
-    int i;
-
-    while (temp[i])
-    {
-        if (temp[i++] == EXPAND_)
-            d++;
-        i++;
-    }
+    if (ft_isdigit(c) || c == '@')
+        return (1);
+    return (0);
 }
 
-int handle_dolar(t_data *data, int index, char pid)
+void    behind_silent (t_data *data, char *pid)
 {
     char    *temp;
+    int     len;
     int     i;
 
     i = 0;
+    len = 0;
     temp = data->token->lex;
     free(data->token->lex);
-    data->token->lex = malloc(sizeof (char) * update_size(ft_strlen(pid), temp));
-    while (temp[i])
-    {
-        
-    }
-
+    while (temp[i] != EXPAND_)
+        len++;
+    data
+    
 }
-
-//// lexem = adfsfsfrfer$$$$$$@HOME.
-
 int expander (t_data *data, char *buff)
 {
     int     d;
-    char    *pid;
+    int     i;
+    char    *dolars;
     char    *var;
     char    *value;
+    char    *pid;
 
     d = 0;
+    i = 0;
     var = NULL;
     value = NULL;
     pid = ft_itoa(getppid());
-    d += handle_dolar (data, d, pid);
-    // // Check if expanded.
-    // // $$$HOME_
-    // if (d % 2 != 0 && buff[d] != '\0')
-    // {
-    //     // CASE OF '@' & NUMBERS
-    //     if (is_silent(buff[d]))
-    //         behind_silent(data, buff + d);
-    //     // ALPHABETIC CASE
-    //     else
-    //     {
-            
-    //     }
-    // }
+    while (buff[d] == EXPAND_)
+        d++;
+    data->err = 0;
+    dolars = NULL;
+    while (buff[i] == EXPAND_)
+    {
+        if (buff[i] == EXPAND_ && buff[i + 1] == EXPAND_)
+        {
+            dolars = ft_strjoin (dolars, pid);
+            i += 2;
+        }
+        else
+            i++;
+    }
+    if (d % 2 != 0)
+    {
+        if (is_silent(buff[d]))
+            expand_silent(data, dolars);
+    }
+    printf("dolars: %s\n", dolars);
+    exit(0);
+    // EVEN CASE
 
     exit (0);  
 }
