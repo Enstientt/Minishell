@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/13 18:37:44 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:04:27 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,18 @@ int         check_first_end(t_data *data);
 int         invalid_begin(t_tokens *token);
 int         invalid_end(t_tokens *token);
 int         invalid_file(t_tokens *token);
-int         expand_var(t_data *data);
 void        check_keyword(t_data *data);
-int         expander (t_data *data, char *buff);
 int         quotes_syntax(t_data *data);
 int         check_quotes(char *lexem, int type);
 void        abs_syntax(t_data *data, int lexem_len, int n_quotes);
 int         check_redirections (t_data *data);
+int         expand_var(t_data *data);
+int         expander (t_data *data, char *buff);
+int         is_silent(char c);
+void        expand_silent (t_data *data, char *dolars);
+int         update_lexlen(char *buff, char *dolars);
+void        non_param(t_data *data, char *dolars);
+void        exp_var(t_data *data, char *buff, char *dolars);
 
         /////////////// PARCER ///////////////
 

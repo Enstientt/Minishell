@@ -67,10 +67,8 @@ void    check_keyword(t_data *data)
     int i;
 
     i = 0;
-    while (data->token->lex[i])
-    {
-        // if (data->token->lex[i] == EXPAND_)
-        //     expander(data, data->token->lex + i);
+    while (data->token->lex[i] != EXPAND_ && data->token->lex[i] != '\0')
         i++;
-    }
+    if (data->token->lex[i] == EXPAND_)
+        expander(data, data->token->lex + i);
 }
