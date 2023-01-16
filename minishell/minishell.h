@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/15 18:04:27 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:32:47 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ int         check_redirections (t_data *data);
 int         expand_var(t_data *data);
 int         expander (t_data *data, char *buff);
 int         is_silent(char c);
-void        expand_silent (t_data *data, char *dolars);
-int         update_lexlen(char *buff, char *dolars);
+void        expand_silent (t_data *data, char *dolars, int exp);
+int         update_lexlen(char *buff, char *dolars, int exp);
 void        non_param(t_data *data, char *dolars);
 void        exp_var(t_data *data, char *buff, char *dolars);
+int         size_update(char *temp, char *dolars, char *value);
+
 
         /////////////// PARCER ///////////////
 

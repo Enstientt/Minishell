@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/13 11:36:22 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:26:29 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ int is_keyword(t_data *data, char *buffer, int *add_node)
     {
         if (*add_node)
         {
-            add_new_node(data);
+            add_new_node (data);
             data->token = data->token->next;
         }
         i += keyword(data, buffer + i);
-        *add_node = 1;  
+        *add_node = 1;
     }
     return (i);
 }
@@ -56,12 +56,12 @@ int is_pipe (t_data *data, char *buffer, int *add_node)
             add_new_node(data);
             data->token = data->token->next;
         }
-        i += operator(data, buffer + i, buffer[i]);
+        i += operator (data, buffer + i, buffer[i]);
         *add_node = 1;
     }
     return (i);
 }
-int is_redirection(t_data *data, char *buffer, int *add_node)
+int is_redirection (t_data *data, char *buffer, int *add_node)
 {
     int i;
     

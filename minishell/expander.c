@@ -50,13 +50,16 @@ int expander (t_data *data, char *buff)
     if (d % 2 != 0 && buff[d] != '\0')
     {
         if (is_silent(buff[d]))
-            expand_silent (data, dolars);
+            expand_silent (data, dolars, 1);
         else if (!is_silent(buff[d]))
             exp_var(data, buff, dolars);
     }
+    else if (d % 2 == 0 && buff[d] != '\0')
+        expand_silent (data, dolars, 0);
     else
         non_param(data, dolars);
-    // else if (d % 2 != 0)
+    free(dolars);
     return (0);
-    // EVEN CASE
+
+
 }

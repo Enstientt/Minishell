@@ -24,7 +24,7 @@ int is_silent(char c)
     return (0);
 }
 
-int update_lexlen(char *temp, char *dolars)
+int update_lexlen(char *temp, char *dolars, int exp)
 {
     int i;
     int len;
@@ -38,7 +38,7 @@ int update_lexlen(char *temp, char *dolars)
     }
     while (temp[i] == EXPAND_)
         i++;
-    if (is_silent(temp[i]))
+    if (is_silent(temp[i]) && exp == 1)
         i++;
     while (temp[i++])
         len++;
@@ -47,7 +47,7 @@ int update_lexlen(char *temp, char *dolars)
 
 /// Allocate lexem string // put what behind $ sign in new lexem.
 
-void    expand_silent (t_data *data, char *dolars)
+void    expand_silent (t_data *data, char *dolars, int exp)
 {
     char    *temp;
     int     i;
@@ -61,7 +61,7 @@ void    expand_silent (t_data *data, char *dolars)
     free(data->token->lex);
     data->token->lex = NULL;
     // printf("PIDS size: %zu\nNew size: %d\n", ft_strlen(dolars), update_lexlen(temp, dolars));
-    data->token->lex = malloc(sizeof(char) * update_lexlen(temp, dolars));
+    data->token->lex = malloc(sizeof(char) * update_lexlen(temp, dolars, exp));
     while (temp[t] != EXPAND_ && temp[t] != '\0')
     {
         data->token->lex[i] = temp[t];
@@ -79,7 +79,8 @@ void    expand_silent (t_data *data, char *dolars)
         }
         j++;
     }
-    if (is_silent (temp[t]))
+    // is silent 
+    if (is_silent (temp[t]) && exp == 1)
         t++;
     while (temp[t])
     {

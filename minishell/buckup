@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/14 15:04:43 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:41:01 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,4 +375,68 @@ int expand (t_data *data, char *buff)
 
 // $$$HOME_  | ODD CASE   | EXPAND || SILENT.
 
-    dolars = malloc(sizeof (char) * ((d / 2) * ft_strlen(pid)));
+// dolars = malloc(sizeof (char) * ((d / 2) * ft_strlen(pid)));
+
+
+// int expander_var (t_data *data, char *buff)
+// {
+//     int     d;
+//     int     i;
+//     char    *var;
+//     char    *value;
+
+//     d = 0;
+//     var = NULL;
+//     while (buff[d] == EXPAND_)
+//         d++;
+//     if (buff[d] != ' ' && buff[d] != '\t')
+//     {
+//         // if (buff[i] == '?')
+//         //     get_exit_status(data, buff + i);
+//         var = get_var (data, buff + d);
+//         value = get_value (data, var);
+//         if (value != NULL)
+//             merge(data, value);
+//         /// if variable not exist.
+//         /// don't dispay it
+//     }
+//     free  (var);
+//     return (i);
+// }
+
+
+/// EX : This is the PWD var : $PWD from the env.
+// void    merge(t_data *data, char *value)
+// {
+//     char    *temp;
+//     int     i;
+//     int     j;
+//     int     v;
+
+//     temp = data->token->lex;
+//     free(data->token->lex);
+//     exit (0);
+//     printf("NEW SIZE :%d \n", size_update(data, temp, value));
+//     data->token->lex = malloc(sizeof(char) * size_update(data, temp, value));
+//     if (!data->token->lex)
+//     {
+//         free(temp);
+//         exit_error(data, 2, "Minishell: Allocation failed.");
+//     }
+//     i = 0;
+//     j = 0;
+//     v = 0;
+//     while (temp[i])
+//     {
+//         if (temp[i] == EXPAND_)
+//         {
+//             while (temp[i] != ' ' && temp[i] != '\t' &&  temp[i] != '\0' && temp[i] != data->token->type)
+//                 i++;
+//             while (value[v])
+//                 data->token->lex[j++] = value[v++];
+//         }
+//         if (temp[i] != '\0')
+//             data->token->lex[j++] = temp[i++];
+//     }
+//     data->token->lex[j] = '\0';
+// }
