@@ -28,7 +28,7 @@ int main(int ac, char **av, char **envp)
         data.buffer = ft_strdup("");
         data.envp_ = ft_2strdup(envp);
         data.token = NULL;
-        av = NULL;
+        av[0] = NULL;
         while (1)
         {
             buffer_size = 0;

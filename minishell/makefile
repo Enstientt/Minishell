@@ -14,7 +14,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-READLINEFLAG = -lreadline
+READLINEFLAG =   -lreadline -lhistory
 
 LIBFT = libft/libft.a
 
@@ -23,7 +23,6 @@ LIB = minishell.h
 NAME = minishell
 
 SRCS = 	main.c \
-		minishell.c \
 		utils.c \
 		lexer.c \
 		lexer_.c \
@@ -37,11 +36,13 @@ SRCS = 	main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all : $(NAME)
+%.o : %.c $(LIB) -lreadline
+	@$(CC) $(CFLAGS) -c $< -o $@
 
+all : $(NAME)
 $(NAME) : $(OBJS) $(LIB)
 	@make -C libft
-	@$(CC) $(CFLAGS) $(LIBFT) $(READLINEFLAG) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINEFLAG)  -o $(NAME)
 
 clean :
 	@make clean -C libft

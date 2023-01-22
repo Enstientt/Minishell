@@ -114,7 +114,7 @@ t_tokens *lexer(t_data *data)
         {
             if (data->buffer[i] == ' ' || data->buffer[i] == '\t')
                 i += is_space_or_tab (data->buffer + i);
-            else if (data->buffer[i] != ' ' && data->buffer[i] != '\t' && data->buffer != '\0')
+            else if (data->buffer[i] != ' ' && data->buffer[i] != '\t' && data->buffer[i] != '\0')
             {
                 i += is_quoted (data, data->buffer + i, &add_node);
                 i += is_redirection (data, data->buffer + i, &add_node);

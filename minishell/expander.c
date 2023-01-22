@@ -33,16 +33,10 @@ char    *expand_dolars(char *buff, char *pid)
 int expander (t_data *data, char *buff)
 {
     int     d;
-    int     i;
     char    *dolars;
-    char    *var;
-    char    *value;
     char    *pid;
 
     d = 0;
-    i = 0;
-    var = NULL;
-    value = NULL;
     pid = ft_itoa(getppid());
     while (buff[d] == EXPAND_)
         d++;
