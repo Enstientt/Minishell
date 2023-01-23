@@ -1,8 +1,0 @@
-+ P1 = Allocation dynamique of the lexem string can leak, the lexem conenet will countain some garbage values
-+ Possible solutions: 1 - Counting the lenght of the needed input then aloocate and copieng it again inside lexe,me string 
-+ P2 = LAST NODE = NULL;
-
-
-
-* minishell$> ls         "" |
-Minishell: "" |: Inclosed quotes 
