@@ -1,19 +1,5 @@
 #include"minishell.h"
 
-void    optype(int size, int type, t_tokens *token)
-{
-    if (size == 1 && type == REDOUT)
-        token->type = REDOUT;
-    else if (size > 1 && type == REDOUT)
-        token->type = APPEND;
-    else if (size == 1 && type == REDIN)
-        token->type = REDIN;
-    else if (size > 1 && type == REDIN)
-        token->type = HEREDOC;
-    else if (type == PIPE)
-        token->type = PIPE;
-}
-
 int operator (t_data *data, char *buff, int type)
 {
     int i;
@@ -47,7 +33,6 @@ int expand(t_data *data, char *buff)
     j = 0;
     len = 0;
     content = 0;
-    /// Counting the size of characters that needed to be put inside lexem string;
     while (buff[len] != ' ' && buff[len] != '\t' && buff[len] != '\0')
     {
         if (buff[len] != EXPAND_)

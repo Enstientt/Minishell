@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+void optype(int size, int type, t_tokens *token)
+{
+    if (size == 1 && type == REDOUT)
+        token->type = REDOUT;
+    else if (size > 1 && type == REDOUT)
+        token->type = APPEND;
+    else if (size == 1 && type == REDIN)
+        token->type = REDIN;
+    else if (size > 1 && type == REDIN)
+        token->type = HEREDOC;
+    else if (type == PIPE)
+        token->type = PIPE;
+}
+
 int is_space_or_tab(char *buffer)
 {
     int i;

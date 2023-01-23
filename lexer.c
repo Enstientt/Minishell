@@ -10,11 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-                // PUTING WHAT BETWEEN QUOTES OR ESCAP ON LEX STRING.
-                // INCLUDE THE QUOTING ON THE LEX STRING.
-
-
-
 #include"minishell.h"
 
 // Buff = "$$$$PATH"

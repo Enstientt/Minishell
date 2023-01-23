@@ -45,8 +45,6 @@ int update_lexlen(char *temp, char *dolars, int exp)
     return (len + ft_strlen(dolars));
 }
 
-/// Allocate lexem string // put what behind $ sign in new lexem.
-
 void    expand_silent (t_data *data, char *dolars, int exp)
 {
     char    *temp;
@@ -60,7 +58,6 @@ void    expand_silent (t_data *data, char *dolars, int exp)
     temp = ft_strdup(data->token->lex);
     free(data->token->lex);
     data->token->lex = NULL;
-    // printf("PIDS size: %zu\nNew size: %d\n", ft_strlen(dolars), update_lexlen(temp, dolars));
     data->token->lex = malloc(sizeof(char) * update_lexlen(temp, dolars, exp));
     while (temp[t] != EXPAND_ && temp[t] != '\0')
     {
@@ -79,7 +76,6 @@ void    expand_silent (t_data *data, char *dolars, int exp)
         }
         j++;
     }
-    // is silent 
     if (is_silent (temp[t]) && exp == 1)
         t++;
     while (temp[t])

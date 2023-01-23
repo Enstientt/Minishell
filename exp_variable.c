@@ -77,7 +77,6 @@ void    var_exist(t_data *data, char *dolars, char *value)
     v = 0;
     temp = ft_strdup(data->token->lex);
     free(data->token->lex);
-    printf("The new size: %d\n", size_update(temp, dolars, value) - 1);
     data->token->lex = malloc (sizeof(char) * size_update(temp, dolars, value) - 1);
     while (temp[i])
     {
@@ -94,8 +93,6 @@ void    var_exist(t_data *data, char *dolars, char *value)
             data->token->lex[l++] = temp[i++];
     }
     data->token->lex[l] = '\0';
-    // printf("%s\n", data->token->lex);
-    // exit (0);
     free(temp);
 }
 

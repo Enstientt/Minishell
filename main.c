@@ -41,20 +41,17 @@ int main(int ac, char **av, char **envp)
             }
             add_history(data.buffer);
             data.token = lexer(&data);
-            display_list(data.token);
-            exit (0);
             if (data.token)
             {
                 data.token = syntax_checker (&data);
                 if (data.token && data.err == 0)
                 {
-                    // printf("Error status: [ %d ]\n", data.err);
+                    printf("Error status: [ %d ]\n", data.err);
                     display_list (data.token);
                 }
             }
             free_data(&data);
         }
     }
-    // expander(&data, "$$$@HOME");
     return(0);
 }
