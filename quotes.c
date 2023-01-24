@@ -1,6 +1,4 @@
 #include"minishell.h"
-// "union quoted "union quoted "Union Quoted "Union quoted""""    [v]
-//  echo "hello, World "Here is again "Expand this $PWD UNION  """""   [v]
 
 void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
 {
@@ -10,10 +8,14 @@ void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
 
     i = 0;
     j = 0;
-    temp = data->token->lex;
+    temp = ft_strdup(data->token->lex);
     free(data->token->lex);
+
     if (lexem_len - n_quotes == 0)
+    {
         data->token->lex = NULL;
+        data->token->type = EMPTY;
+    }
     else
     {
         data->token->lex = malloc(sizeof(char) * (lexem_len - n_quotes));
@@ -24,7 +26,9 @@ void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
         while (temp[i] != data->token->type && temp[i] != '\0')
             data->token->lex[j++] = temp[i++];
         data->token->lex[j] = '\0';
+        data->token->type = KEYWORD;
     }
+    free (temp);
 }
 /// Calucatate the number of quotes: if (n_q % 2 = 0) then get abs_syntax
 
@@ -50,10 +54,8 @@ int check_quotes(char *lexem, int type)
 // echo "Put this on the file  "Expand PWD ==> $PWD""
 int quotes_syntax(t_data *data)
 {
-    int i;
     int n_quotes;
 
-    i = 0;
     n_quotes = check_quotes(data->token->lex, data->token->type);
     if (n_quotes == -1)
     {
@@ -61,14 +63,6 @@ int quotes_syntax(t_data *data)
         data->err = 1;
         return (1);
     }
-
-    /// Expand part
-    while (data->token->lex[i])
-    {
-        if (data->token->lex[i] == EXPAND_)
-            i += expander (data, data->token->lex + i);
-        i++;
-    }
-    // abs_syntax(data, ft_strlen(data->token->lex), n_quotes);
+    abs_syntax(data, ft_strlen(data->token->lex), n_quotes);
     return (0);
 }
