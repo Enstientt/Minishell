@@ -3,10 +3,12 @@
 
 ## input
 
-* minishell$> echo "Expanding some variables:" PWD=$PWD HOME=$HOME > File | ls -l
-
+```
+    * minishell$> echo "Expanding some variables:" PWD=$PWD HOME=$HOME > File | ls -l
+```
 ## Output
 
+```
 ---- Node 0 ----
 Lexeme: echo
 Type: -1
@@ -82,3 +84,5 @@ Type: -2
 ---- Node 18 ----
 Lexeme: -l
 Type: -1
+
+```
