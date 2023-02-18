@@ -1,7 +1,7 @@
 # Tokenizing the input line or 'CMD'
 
 
-## input
+## input 
 
 ```
     * minishell$> echo "Expanding some variables:" PWD=$PWD HOME=$HOME > File | ls -l
