@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:18:40 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/18 16:13:20 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ enum
 
 typedef struct  s_env
 {
-    char            *var;
+    char            *name;
     char            *value;
     struct s_env    *next;
 }               t_env;
@@ -61,8 +61,8 @@ typedef struct  s_tokens
 
 typedef struct  s_data
 {
-    char        *buffer;
     char        **envp_;
+    char        *buffer;
     t_tokens    *tokens;
     t_env       *env;
     int         err;
@@ -81,7 +81,6 @@ int             is_whitespace(char c);
 int             is_special_op(char c);
 int             is_metecharacter(int type);
 
-
 int             white_space(t_data *data, char *lexem);
 int             quotes(t_data *data, char *lexem, char type);
 int             expand(t_data *data, char *lexem);
@@ -94,7 +93,15 @@ void            init_list(t_data *data);
 void            create_new_node(t_data *data, int *add_node);
 void            add_new_node(t_data *data);
 
-///////////////////////////////// SYNTAX ANALYZER //////////////////////////////
+///////////////////////////////// ENVIRONMENT /////////////////////////////////
+
+void            set_environment(t_data *data);
+void            add_node(t_data *data, int *new_node);
+int             fill_name(t_data *data, char *envp_);
+int             fill_value(t_data *data, char *envp_);
+void            display_environment(t_data *data);
+
+    ///////////////////////////////// SYNTAX ANALYZER //////////////////////////////
 t_tokens        *syntax_analyzer(t_data *data);
 int             analyze_begin_end(t_data *data);
 int             analyze_pipe(t_data *data);
