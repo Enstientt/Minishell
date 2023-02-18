@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/02/18 15:06:32 by ahammout         ###   ########.fr        #
+#    Updated: 2023/02/18 16:14:51 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS = 	srcs/main.c \
 		srcs/parsing/lexer/lexer_check_tools.c \
 		srcs/parsing/lexer/lexer_tools.c \
 		srcs/parsing/lexer/lexer_quotes.c \
+		srcs/parsing/environment/set_environment.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer_.c \
 		srcs/parsing/syntax_analyzer/syntax_quotes.c \
