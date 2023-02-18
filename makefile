@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/02/18 14:20:41 by ahammout         ###   ########.fr        #
+#    Updated: 2023/02/18 15:06:32 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ READLINEFLAG =   -lreadline -lhistory
 
 LIBFT = libft/libft.a
 
-LIB = includes/minishell.h
+INCLUDES = includes/minishell.h
 
 NAME = minishell
 
@@ -38,12 +38,12 @@ SRCS = 	srcs/main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-%.o : %.c $(LIB) -lreadline
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o : %.c $(INCLUDES) -lreadline
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 all : $(NAME)
 
-$(NAME) : $(OBJS) $(LIB)
+$(NAME) : $(OBJS) $(INCLUDES)
 	@make -C libft
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINEFLAG) -o $(NAME)
 
