@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:12:53 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 16:39:14 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/18 16:48:43 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,4 @@ void    set_environment(t_data *data)
         ref.i++;
     }
     data->env = head;
-}
+} 
