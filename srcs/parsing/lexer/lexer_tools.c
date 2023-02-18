@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:51 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:21:22 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/18 16:05:17 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void add_new_node(t_data *data)
 
     node = malloc(sizeof(t_tokens));
     if (!node)
-        exit_error(data, 1, "Malloc: allocation failed.");
+        exit_error(data, 1, "Malloc: Allocation failed.");
     node->next = NULL;
     data->tokens->next = node;
 }
@@ -46,16 +46,17 @@ void create_new_node(t_data *data, int *add_node)
 
 void display_list(t_tokens *token)
 {
-    int n;
-    t_tokens *tmp;
+    t_tokens    *head;
+    int         n;
 
+    head = token;
     n = 0;
-    tmp = token;
-    while (tmp != NULL)
+    while (head != NULL)
     {
-        printf("---- Node %d ----\nLexeme: %s\nType: %d\n\n", \
-            n, tmp->lex, tmp->type);
+        printf("---- Node %d ----\n", n);
+        printf("Lexeme: %s\n",head->lex);
+        printf("Type: %d\n\n", head->type);
         n++;
-        tmp = tmp->next;
+        head = head->next;
     }
 }
