@@ -6,13 +6,13 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/11 17:43:38 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/18 14:22:33 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
+#include "../../includes/minishell.h"
 
-int non_white(char *str)
+int white_check(char *str)
 {
     int i;
 
@@ -48,30 +48,40 @@ char    **ft_2strdup(char **tab1)
 
 void    free_data(t_data *data)
 {
-    free(data->buffer);
-    data->buffer = NULL;
-    while (data->token != NULL)
+    while (data->tokens != NULL)
     {
-        free(data->token->lex);
-        free(data->token);
-        data->token = data->token->next;
+        free(data->tokens->lex);
+        free(data->tokens);
+        data->tokens = data->tokens->next;
     }
 }
 
-void exit_error(t_data *data, int option, char *err)
+void exit_error(t_data *data, int free_tokens, char *err)
 {
-    if (option == 1)
-        free(data->buffer);
-    else if (option == 2)
+    if (free_tokens)
     {
-        free(data->buffer);
-        while (data->token != NULL)
+        while (data->tokens != NULL)
         {
-            free(data->token->lex);
-            free(data->token);
-            data->token = data->token->next;
+            free(data->tokens->lex);
+            free(data->tokens);
+            data->tokens = data->tokens->next;
         }
     }
-    printf("%s\n", err);
+    free(data->buffer);
+    free(data->envp_);
+    
+        printf("%s\n", err);
     exit(EXIT_FAILURE);
+}
+
+void    display_table(char **dstr)
+{
+    int i;
+
+    i = 0;
+    while (dstr[i])
+    {
+        printf ("Line[ %d ]: %s\n",i, dstr[i]);
+        i++;
+    }
 }

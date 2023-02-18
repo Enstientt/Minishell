@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:15:34 by ahammout          #+#    #+#             */
-/*   Updated: 2023/01/16 16:41:01 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/17 16:20:17 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,12 @@
     Arguments : data ==> struct of data,  tmp ==> the token with type |Quote|,  size of Lexeme.
 */
 //abs_syntax(data, tmp, ft_strlen(tmp->lex));
-    
-	
+
+////// CHECK THE SYNTAX : GENERATE ERRORS / GENERATE VALID COMMAND ///////
+/*
+    RETURN : SECCUES : + VALID SYNTAX ==> LINKED LIST[TOKENAZED].
+            FAILURE : + INVALID SYNTAX ==> ERROR MESSAGE & RETURN NULL.
+*/
 
 int lexer(t_data *data)
 {
