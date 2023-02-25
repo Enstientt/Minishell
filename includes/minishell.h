@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 16:13:20 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/26 00:12:54 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include"../libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <stdbool.h>
+#include<syslimits.h>
 
 enum
 {
@@ -37,12 +39,23 @@ enum
         WHITE = -2,
 };
 
+int	exitS;
+
 typedef struct  s_env
 {
     char            *name;
     char            *value;
     struct s_env    *next;
 }               t_env;
+
+typedef struct s_exec
+{
+	char			**str;
+	char			*flg;
+	int				in_file;
+	int				out_file;
+	struct s_exec	*next;
+}	t_exec;
 
 typedef struct  s_reference
 {
@@ -59,15 +72,60 @@ typedef struct  s_tokens
     struct s_tokens     *next;
 }               t_tokens;
 
+typedef struct s_vars
+{
+	t_exec	*tmp;
+	int		*pids;
+	int		status;
+	int		*std;
+	int		i;
+}				t_vars;
+
+typedef struct s_cmd
+{
+	char			*str;
+	t_tokens		type;
+	bool			opr;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
+
+typedef struct s_pipe
+{
+	int		p_c;
+	int		**p_fd;
+}	t_pipe;
+
 typedef struct  s_data
 {
     char        **envp_;
     char        *buffer;
     t_tokens    *tokens;
     t_env       *env;
+    t_pipe      *pipex;
+    t_cmd       *cmd;
     int         err;
+    t_exec      *exec;
+    char	path[PATH_MAX];
 }               t_data;
 
+    /////////////////////////////// execution /////////////////////////////////////
+void	ft_echo(t_exec	*exec);
+int     identify_builtin(t_data *data, t_exec	*cmd);
+void	ft_cd(t_data	*data);
+int     check_pipes(t_exec	*exec);
+void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
+int     *save_std(void);
+int     **pipe_gener(int count);
+void	redirect_inpipes(t_exec	*tmp, int status, t_data	*data, int i);
+void	close_fd(t_data	*data);
+void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
+int     redirect_pipes(t_exec *tmp, int file_, int i, t_data *data);
+void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_);
+void	pipe_exe(int *pids, t_data	*data, t_exec *tmp, int i);
+void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
+void	handle_fds(t_data *data, int i);
+void	ft_exit(t_exec	*cmd);
     /////////////////////////////// PARSING PART /////////////////////////////////////
 
 t_tokens        *parse_line(t_data *data);
