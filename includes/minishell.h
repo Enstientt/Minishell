@@ -6,21 +6,24 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/26 00:12:54 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/06 20:07:09 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include"../libft/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdbool.h>
-#include<syslimits.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/libft.h"
+# include <stdbool.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <signal.h>
+# include <errno.h>
+# include <paths.h>
+# include <fcntl.h>
 
 enum
 {
