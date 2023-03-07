@@ -6,13 +6,13 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:41:50 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/02/26 00:17:29 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:37:11 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	identify_builtin(t_data *data, t_exec	*cmd)
+int	builtin(t_data *data, t_exec	*cmd)
 {
 	if (!cmd)
 		return (1);

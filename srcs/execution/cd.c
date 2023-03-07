@@ -6,20 +6,20 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 22:15:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/02/26 00:12:38 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:40:47 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	cd_only(t_cmd	*tmp, t_data	*data)
+static int	cd(t_cmd	*tmp, t_data	*data)
 {
 	char	*str;
 	char	*tmp1;
 
 	if (!tmp->next)
 	{
-		str = get_ev(data, "HOME");
+		str = env_(data, "HOME");
 		tmp1 = getcwd(NULL, PATH_MAX);
 		//export here with the old pwd
 		if (chdir(str) == -1)
@@ -42,7 +42,7 @@ void	ft_cd(t_data	*data)
 	char	*str;
 
 	tmp = data->cmd;
-	if (!cd_only(tmp, data))
+	if (!cd(tmp, data))
 		return ;
 	else
 	{

@@ -6,13 +6,13 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:06:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/02/26 00:13:15 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:45:24 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	redirect_pipes(t_exec *tmp, int file_, int i, t_data *data)
+int	pipes_redirection(t_exec *tmp, int file_, int i, t_data *data)
 {
 	int			status;
 
@@ -20,7 +20,7 @@ int	redirect_pipes(t_exec *tmp, int file_, int i, t_data *data)
 	{
 		if (tmp->in_file == -1)
 			return (-1);
-		redirect_inpipes(tmp, status, data, i);
+		red_inp(tmp, status, data, i);
 		if (tmp->out_file != 1)
 		{
 			if (i != data->pipex->p_c)
@@ -91,7 +91,7 @@ void	pipe_exe(int *pids, t_data	*data, t_exec *tmp, int i)
 	if (pids[i] == 0)
 	{
 		handle_fds(data, i);
-		if (!identify_builtin(data, tmp))
+		if (!builtin(data, tmp))
 			;
 		else
 		{

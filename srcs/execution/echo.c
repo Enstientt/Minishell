@@ -6,13 +6,13 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 01:55:15 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/02/25 02:00:27 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:39:12 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	words(t_exec	*exec, int i)
+static void	auxiliary(t_exec	*exec, int i)
 {
 	char	**rest;
 	int		j;
@@ -34,7 +34,7 @@ static void	words(t_exec	*exec, int i)
 		ft_putstr_fd(exec->str[i], exec->out_file);
 }
 
-static	int	check_opt(t_exec	*exec, bool	*mode)
+static	int	option(t_exec	*exec, bool	*mode)
 {
 	int		i;
 	int		j;
@@ -67,7 +67,7 @@ void	ft_echo(t_exec	*exec)
 	int		i;
 	bool	mode;
 
-	i = check_opt(exec, &mode);
+	i = option(exec, &mode);
 	if (!exec->str[1])
 	{
 		if (!mode)
@@ -77,7 +77,7 @@ void	ft_echo(t_exec	*exec)
 	}
 	while (exec->str[i])
 	{
-		words(exec, i);
+		auxiliary(exec, i);
 		if (exec->str[i + 1])
 			ft_putstr_fd(" ", exec->out_file);
 		i++;

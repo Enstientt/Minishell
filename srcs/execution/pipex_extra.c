@@ -6,13 +6,13 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 20:17:53 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/02/26 00:18:50 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:45:09 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_pipes(t_exec	*exec)
+int	count_pps(t_exec	*exec)
 {
 	int		cnt;
 	t_exec	*tmp;
@@ -45,7 +45,7 @@ int	**pipe_gener(int count)
 	return (pipes);
 }
 
-void	redirect_inpipes(t_exec	*tmp, int status, t_data	*data, int i)
+void	red_inp(t_exec	*tmp, int status, t_data	*data, int i)
 {
 	if (tmp->in_file != 0)
 	{
@@ -83,7 +83,7 @@ void	handle_loop(t_vars	pipe, int her_file, t_data	*data)
 {
 	restore_parent(pipe.std, 0, pipe.pids, data);
 	//herdoc handler
-	pipe.status = redirect_pipes(pipe.tmp, her_file, pipe.i, data);
+	pipe.status = pipes_redirection(pipe.tmp, her_file, pipe.i, data);
 	if (pipe.status == -1)
 		return ;
 	pipe.pids[pipe.i] = fork();

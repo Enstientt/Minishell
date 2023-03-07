@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/06 20:07:09 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:45:13 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,16 @@ typedef struct  s_data
 
     /////////////////////////////// execution /////////////////////////////////////
 void	ft_echo(t_exec	*exec);
-int     identify_builtin(t_data *data, t_exec	*cmd);
+int     builtin(t_data *data, t_exec	*cmd);
 void	ft_cd(t_data	*data);
-int     check_pipes(t_exec	*exec);
+int     count_pps(t_exec	*exec);
 void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
 int     *save_std(void);
 int     **pipe_gener(int count);
-void	redirect_inpipes(t_exec	*tmp, int status, t_data	*data, int i);
+void	red_inp(t_exec	*tmp, int status, t_data	*data, int i);
 void	close_fd(t_data	*data);
 void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
-int     redirect_pipes(t_exec *tmp, int file_, int i, t_data *data);
+int     pipes_redirection(t_exec *tmp, int file_, int i, t_data *data);
 void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_);
 void	pipe_exe(int *pids, t_data	*data, t_exec *tmp, int i);
 void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
