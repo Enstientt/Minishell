@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/07 20:45:13 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/15 18:31:04 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	pipe_exe(int *pids, t_data	*data, t_exec *tmp, int i);
 void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
 void	handle_fds(t_data *data, int i);
 void	ft_exit(t_exec	*cmd);
+void    ft_export(t_data *data, t_exec *cmd);
     /////////////////////////////// PARSING PART /////////////////////////////////////
 
 t_tokens        *parse_line(t_data *data);

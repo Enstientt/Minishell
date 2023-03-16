@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:06:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/07 20:45:24 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/09 03:13:01 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,5 @@ void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_)
 	restore_parent(pipe.std, 1, pipe.pids, data);
 	free(pipe.std);
 	free(pipe.pids);
-	//free the pids
+	free_pid(data);
 }

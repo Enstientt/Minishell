@@ -6,55 +6,85 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 22:15:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/07 20:40:47 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/10 19:04:58 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	cd(t_cmd	*tmp, t_data	*data)
+static int	change_to_home_directory(char *home_dir, char *oldpwd_var)
 {
-	char	*str;
-	char	*tmp1;
+    char *cwd = getcwd(NULL, PATH_MAX);
+    if (cwd == NULL)
+    {
+        perror("getcwd");
+        return 1;
+    }
 
-	if (!tmp->next)
-	{
-		str = env_(data, "HOME");
-		tmp1 = getcwd(NULL, PATH_MAX);
-		//export here with the old pwd
-		if (chdir(str) == -1)
-		{
-			exitS = 1;
-			perror(str);
-		}
-		else
-			//export here also with pwd
-		free(tmp1);
-		exitS = 0;
-		return (0);
-	}
-	return (1);
+    if (do_export("OLDPWD", cwd, false) == -1)
+    {
+        free(cwd);
+        return 1;
+    }
+
+    if (chdir(home_dir) == -1)
+    {
+        perror(home_dir);
+        free(cwd);
+        return 1;
+    }
+
+    free(cwd);
+
+    if (do_export("PWD", home_dir, false) == -1)
+        return 1;
+
+    return 0;
 }
 
-void	ft_cd(t_data	*data)
+static int	change_to_directory(char *dir_path)
 {
-	t_cmd	*tmp;
-	char	*str;
+    char *cwd = getcwd(NULL, PATH_MAX);
+    if (cwd == NULL)
+    {
+        perror("getcwd");
+        return 1;
+    }
 
-	tmp = data->cmd;
-	if (!cd(tmp, data))
-		return ;
-	else
-	{
-		if (tmp->next)
-			tmp = tmp->next;
-		str = getcwd(NULL, PATH_MAX);
-		//export OLDPWD
-		if (chdir(tmp->next->str) == -1)
-			return (perror("cd "), exitS = 1, (void)0);
-		else
-			//export "PWD"
-		free(str);
-		exitS = 0;
-	}
+    if (do_export("OLDPWD", cwd, false) == -1)
+    {
+        free(cwd);
+        return 1;
+    }
+
+    if (chdir(dir_path) == -1)
+    {
+        perror(dir_path);
+        free(cwd);
+        return 1;
+    }
+
+    free(cwd);
+
+    if (do_export("PWD", dir_path, false) == -1)
+        return 1;
+
+    return 0;
+}
+
+void	ft_cd(void)
+{
+    char *home_dir = env_("HOME");
+
+    if (get_next_arg() == NULL)
+    {
+        if (change_to_home_directory(home_dir, "OLDPWD") == 0)
+            exitS = 0;
+    }
+    else
+    {
+        char *dir_path = get_next_arg();
+        if (change_to_directory(dir_path) == 0)
+            exitS = 0;
+    }
 }
