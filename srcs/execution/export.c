@@ -6,12 +6,18 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 22:24:41 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/16 20:40:06 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:16:35 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "./../../includes/minishell.h"
+#include <string.h>
 
+t_env *newEnvNode(char *name, char *value);
+
+void addBackEnvNode(t_env **env, t_env *new_node);
+
+int errorIn(const char* str) ;
 
 static int     check_append(char *str)
 {
@@ -24,9 +30,7 @@ static int     check_append(char *str)
                 return (1);
         return (0);
 }
-{
-                
-}
+
 static char    *extract_name(char *str, bool *append)
 {
         int     i;
@@ -39,15 +43,16 @@ static char    *extract_name(char *str, bool *append)
                 *append = true;
         if(append)
         {
-                name = ft_substr(str, 0, i - 1);
+                name = ft_substr(str, 0, i);
         }
         else
         {
-                name = ft_substr(str, 0, i);
+                name = ft_substr(str, 0, i + 1);
         }
-        if(special_param(name))
+        if(errorIn(name))
         {
-		ft_putstr_fd("special param not supported\n", 2);
+                exitS = 3;
+		ft_putstr_fd("not valid in this context\n", 2);
                 return (NULL);
         }
         return (name);
@@ -65,7 +70,7 @@ static char    *extract_value(char *str, bool append)
                 return (ft_substr(str, i + 1, ft_strlen(str) - i));
         return (NULL);
 }
-int special_param(const char* str)
+int errorIn(const char* str)
 {
         int i = 0;
         if (!ft_isalpha(str[i]) && str[i] != '_')
@@ -186,7 +191,7 @@ void    ft_export(t_data *data, t_exec *cmd)
         i = 1;
         if(cmd->str[1] == NULL)
         {
-                print_env(data->env);  //print_env is a function that prints the env list in the format NAME=VALUE
+                sort_environment(data);
                 return;
         }
         while (cmd->str[i])
@@ -200,5 +205,82 @@ void    ft_export(t_data *data, t_exec *cmd)
                 free(name);
                 free(value);
                 i++;
-        }       
+        }
 }
+
+/***************************test section***********************************/
+
+// t_env *env_to_linked_list(char **envp) {
+//     t_env *head = NULL;
+//     t_env *prev = NULL;
+//     for (int i = 0; envp[i] != NULL; i++) {
+//         char *name = strtok(envp[i], "=");
+//         char *value = strtok(NULL, "=");
+//         t_env *new_node = malloc(sizeof(t_env));
+//         new_node->name = ft_strdup(name);
+//         new_node->value = ft_strdup(value);
+//         new_node->next = NULL;
+//         if (prev == NULL) {
+//             head = new_node;
+//         } else {
+//             prev->next = new_node;
+//         }
+//         prev = new_node;
+//     }
+//     return head;
+// }
+
+// void print_env(t_env *env) {
+//     while (env != NULL) {
+//         printf("%s=%s\n", env->name, env->value);
+//         env = env->next;
+//     }
+// }
+
+// void free_env(t_env *env) {
+//     t_env *temp;
+//     while (env != NULL) {
+//         temp = env;
+//         env = env->next;
+//         free(temp->name);
+//         free(temp->value);
+//         free(temp);
+//     }
+// }
+
+// void add_env(t_env **env, char *name, char *value) {
+//     t_env *new_node = malloc(sizeof(t_env));
+//     new_node->name = ft_strdup(name);
+//     new_node->value = ft_strdup(value);
+//     new_node->next = *env;
+//     *env = new_node;
+// }
+
+
+// int main(int argc, char **argv, char **envp) {
+//     t_env *env = env_to_linked_list(envp);
+//     t_env *new_node = malloc(sizeof(t_env));
+//     t_exec cmd ;
+//     t_data data;
+//     int i = 0;
+    
+//     data.env=env;
+//         cmd.str = malloc(sizeof(char *) * argc);    
+//     while(argv[i])
+//     {
+//         cmd.str[i] = argv[i];
+//         i++;
+//     }
+//     cmd.str[i] = NULL;
+// //     new_node->name = ft_strdup("ZAK");
+// //     new_node->value = ft_strdup("it'3 me");
+// //     new_node->next = env;
+//  //   env = new_node;
+//     ft_export(&data, &cmd);
+//     //sort_environment(&data);
+
+//     // free memory
+//    // free_env(env);
+
+//     return 0;
+// }

@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:06:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/09 03:13:01 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:41:46 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_)
 	pipe.status = 1;
 	pipe.tmp = exc;
 	pipe.pids = malloc(sizeof(int) * (data->pipex->p_c + 1));
-	pipe.std = save_stds();
+	pipe.std = save_std();
 	if (data->pipex->p_c)
-		data->pipex->p_fd = create_pipes(data->pipex->p_c);
+		data->pipex->p_fd = pipe_gener(data->pipex->p_c);
 	while (pipe.i <= data->pipex->p_c && pipe.tmp)
 	{
 		handle_loop(pipe, file_, data);
