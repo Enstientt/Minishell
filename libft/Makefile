@@ -25,6 +25,7 @@ SRCS = ft_isalpha.c \
 	   ft_strlcat.c \
 	   ft_strlcpy.c \
 	   ft_strncmp.c \
+	   ft_strcmp.c \
 	   ft_strnstr.c \
 	   ft_strrchr.c \
 	   ft_atoi.c \
