@@ -1,0 +1,82 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 17:36:39 by ahammout          #+#    #+#             */
+/*   Updated: 2023/03/18 23:17:35 by ahammout         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../../includes/minishell.h"
+
+int get_size(t_data *data)
+{
+    t_tokens    *ptr;
+    int         size;
+
+    ptr = data->tokens;
+    size = 0;
+    while (data->tokens && !is_redirection(data->tokens->type) && data->tokens->type != PIPE)
+    {
+        if (data->tokens->type != EMPTY)
+            size++;
+        data->tokens = data->tokens->next;
+    }
+    data->tokens = ptr;
+    return (size);
+}
+
+char    **get_cmd_args(t_data *data)
+{
+    t_reference ref;
+    char        **str;
+
+    ref.i = 0;
+    str = malloc(sizeof(char *) * get_size(data));
+    if (!str)
+    {
+        free_cmds_list(data);
+        exit_error(data, "Minishell: Allocation failed.");
+    }
+    while (data->tokens && !is_redirection(data->tokens->type) && data->tokens->type != PIPE)
+    {
+        if (data->tokens->type != EMPTY)
+        {
+            str[ref.i] = ft_strdup(data->tokens->lex);
+            ref.i++;
+        }
+        data->tokens = data->tokens->next;
+    }
+    str[ref.i] = NULL;
+    return (str);
+}
+
+t_exec  *parser(t_data *data)
+{
+    t_exec      *cmds;
+    t_tokens    *ptr;
+
+    init_cmds_list(data);
+    cmds = data->cmds;
+    ptr = data->tokens;
+    while (data->tokens)
+    {
+        if (data->tokens && !is_redirection(data->tokens->type) && data->tokens->type != PIPE)
+            data->cmds->str = get_cmd_args(data);
+        if (data->tokens && !redirection_handler(data))
+        {
+            data->tokens = ptr;
+            return (cmds);
+        }
+        if (data->tokens && data->tokens->type == PIPE)
+        {
+            next_cmd(data);
+            data->tokens = data->tokens->next;
+        }
+    }
+    data->tokens = ptr;
+    return (cmds);
+}
