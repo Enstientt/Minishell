@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/19 23:39:55 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:39:05 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ void    free_data(t_data *data)
 void    exit_error(t_data *data, char *err)
 {
     free(data->buffer);
-    free(data->envp_);
     free_tokens_list(data);
     printf("%s\n", err);
     exit(EXIT_FAILURE);
 }
+
 char    **ft_2strdup(char **tab1)
 {
     int len;
     int i;
     char    **tab2;
-    
+
     len = 0;
     i = 0;
     while(tab1[len])

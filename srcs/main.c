@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 00:24:04 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:37:41 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int main(int ac, char **av, char **envp)
     if (ac == 1)
     {
         data.buffer = NULL;
-        data.envp_ = ft_2strdup(envp);
         set_environment(&data, envp);
         while (1)
         {

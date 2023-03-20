@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 12:34:58 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:38:11 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct  s_exec
 
 typedef struct  s_data
 {
-    char        **envp_;
     char        *buffer;
     t_env       *env;
     t_tokens    *tokens;
