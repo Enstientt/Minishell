@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 18:13:06 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:22:08 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:34:03 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int update_size(char *lexem, char *pids, char *value)
     if (lexem && (ft_isdigit(lexem[i]) || lexem[i] == '@' || lexem[i] == '*'))
     {
         i++;
-        while(lexem[i])
+        while (lexem[i])
         {
             len++;
             i++;
@@ -36,7 +36,7 @@ int update_size(char *lexem, char *pids, char *value)
 void var_not_exist(t_data *data, char *lexem, char *pids)
 {
     t_reference ref;
-    int         size;
+    int size;
 
     ref.i = 0;
     ref.j = 0;
@@ -62,7 +62,7 @@ void var_not_exist(t_data *data, char *lexem, char *pids)
     }
 }
 
-void    var_exist (t_data *data, char *pids, char *value)
+void var_exist(t_data *data, char *pids, char *value)
 {
     t_reference ref;
 
@@ -77,49 +77,42 @@ void    var_exist (t_data *data, char *pids, char *value)
     data->tokens->lex[ref.l] = '\0';
 }
 
-char    *get_value(t_data *data, char *var)
+char *get_value(t_data *data, char *var)
 {
-    t_reference ref;
-    
-    ref.i = 0;
+    t_env   *head;
+    char    *value;
+
+    value = NULL;
+    head = data->env;
     if (!var)
         return (0);
-    while (data->envp_[ref.i])
+    while (data->env)
     {
-        ref.j = 0;
-        ref.l = 0;
-        while (data->envp_[ref.i][ref.j] != '=')
+        if (ft_strcmp(var, data->env->name) == 0)
         {
-            if (data->envp_[ref.i][ref.j] != var[ref.l])
-                break;
-            ref.j++;
-           ref.l++;
+            value = ft_strdup(data->env->value);
+            break;
         }
-        if (data->envp_[ref.i][ref.j++] == '=' && !var[ref.l])
-            return (data->envp_[ref.i] + ref.j);
-        ref.i++;
+        data->env = data->env->next;
     }
-    return (0);
+    data->env = head;
+    return (value);
 }
 
-char    *get_var (t_data *data, char *lexem)
+char *get_var(t_data *data, char *lexem)
 {
-    int     i;
-    int     len;
-    char    *var;
+    int i;
+    int len;
+    char *var;
 
     len = 0;
     i = 0;
-    while (lexem[len] && (ft_isalpha(lexem[len]) \
-        || ft_isdigit(lexem[len]) || lexem[len] == '_' \
-        || lexem[len] == '@' || lexem[len] == '*'))
+    while (lexem[len] && (ft_isalpha(lexem[len]) || ft_isdigit(lexem[len]) || lexem[len] == '_' || lexem[len] == '@' || lexem[len] == '*'))
         len++;
     var = malloc(sizeof(char) * len);
     if (!var)
-        exit_error(data, 1, "Minishell: Allocation failed.");
-    while (lexem[i] && (ft_isalpha(lexem[i]) \
-        || ft_isdigit(lexem[i]) || lexem[i] == '_' \
-        || lexem[i] == '@' || lexem[len] == '*'))
+        exit_error(data, "Minishell: Allocation failed.");
+    while (lexem[i] && (ft_isalpha(lexem[i]) || ft_isdigit(lexem[i]) || lexem[i] == '_' || lexem[i] == '@' || lexem[len] == '*'))
     {
         var[i] = lexem[i];
         i++;
@@ -128,22 +121,20 @@ char    *get_var (t_data *data, char *lexem)
     return (var);
 }
 
-void    expandable(t_data *data, char *lexem, char *pids)
+void expandable(t_data *data, char *lexem, char *pids)
 {
-    char    *var;
-    char    *value;
-    int     i;
+    char *var;
+    char *value;
+    int i;
 
-    i = 0;        
+    i = 0;
     while (lexem[i] == EXPAND_)
         i++;
     var = get_var(data, lexem + i);
-    value = ft_strdup (get_value(data, var));
-
+    value = get_value(data, var);
     if (value)
         var_exist(data, pids, value);
-
-    else 
+    else
         var_not_exist(data, lexem + i, pids);
     free(var);
     free(value);

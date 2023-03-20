@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 22:04:41 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 16:39:35 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:37:45 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,24 @@
 
 ////////////////////////////////// PARSE_LINE //////////////////////////////
 
-t_tokens    *parse_line(t_data *data)
+void    parse_line(t_data *data)
 {
-    t_tokens    *head;
-
-    head = data->tokens;
     data->tokens = lexer(data);
     if (data->tokens)
     {
-        set_environment(data);
         data->tokens = syntax_analyzer(data);
-        if (data->tokens && data->err == 0)
+        if (data->tokens && !data->err)
         {
             data->tokens = expander(data);
-            if (data->tokens && data->err == 0)
+            if (data->tokens && !data->err)
             {
-                display_list(data->tokens);
-                // printf("Error status: [ %d ]\n", data->err);
-                // display_environment(data);
+                // display_tokens(data->tokens);
+                data->cmds = parser(data);
+                if (!data->err)
+                {
+                    display_cmds(data->cmds);
+                }
             }
         }
     }
-    return (head);
 }

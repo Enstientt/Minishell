@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:22:33 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:39:55 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int white_check(char *str)
+void    free_data(t_data *data)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (ft_isprint(str[i]))
-            return (1);
-        i++;
-    }
-    return (0);
+    free(data->buffer);
+    free_env_list(data);
+    free_tokens_list(data);
+    free_cmds_list(data);
 }
 
+void    exit_error(t_data *data, char *err)
+{
+    free(data->buffer);
+    free(data->envp_);
+    free_tokens_list(data);
+    printf("%s\n", err);
+    exit(EXIT_FAILURE);
+}
 char    **ft_2strdup(char **tab1)
 {
     int len;
@@ -46,32 +48,18 @@ char    **ft_2strdup(char **tab1)
     return (tab2);
 }
 
-void    free_data(t_data *data)
+int white_check(char *str)
 {
-    while (data->tokens != NULL)
-    {
-        free(data->tokens->lex);
-        free(data->tokens);
-        data->tokens = data->tokens->next;
-    }
-}
+    int i;
 
-void exit_error(t_data *data, int free_tokens, char *err)
-{
-    if (free_tokens)
+    i = 0;
+    while (str[i])
     {
-        while (data->tokens != NULL)
-        {
-            free(data->tokens->lex);
-            free(data->tokens);
-            data->tokens = data->tokens->next;
-        }
+        if (ft_isprint(str[i]))
+            return (1);
+        i++;
     }
-    free(data->buffer);
-    free(data->envp_);
-    
-        printf("%s\n", err);
-    exit(EXIT_FAILURE);
+    return (0);
 }
 
 void    display_table(char **dstr)

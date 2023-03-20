@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 18:12:56 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:23:21 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:53:03 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ void    non_param (t_data *data, char *lexem, char *pids)
     ref.i = 0;
     ref.j = 0;
     ref.l = 0;
-    data->tokens->lex = malloc(sizeof (char) * update_size_(lexem, pids) + 1);
-    if (!data->tokens->lex)
-        exit_error(data, 1, "Minishell: allocation failed.");
+    data->tokens->lex = ft_calloc((update_size_(lexem, pids) + 1), sizeof(char));
     while (lexem[ref.i] == EXPAND_)
         ref.i++;
     while (pids[ref.j])
@@ -65,7 +63,7 @@ void    unexpandable(t_data *data, char *lexem, char *pids)
     ref.i = 0;
     ref.j = 0;
     ref.l = 0;
-    data->tokens->lex = malloc(sizeof(char) * update_size_(lexem, pids));
+    data->tokens->lex = ft_calloc(update_size_(lexem, pids), sizeof (char));
     while (lexem[ref.i] == EXPAND_)
         ref.i++;
     while (pids[ref.j])

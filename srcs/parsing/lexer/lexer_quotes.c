@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 19:45:24 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:21:27 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/02/21 00:57:14 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int q_keyword(t_data *data, char *lexem)
         ref.l++;
     data->tokens->lex = malloc(sizeof(char) * ref.i);
     if (!data->tokens->lex)
-        exit_error(data, 1, "Minishell: Allocation failed.");
+        exit_error(data, "Minishell: Allocation failed.");
     while (lexem[ref.i] && lexem[ref.i] != EXPAND_)
         data->tokens->lex[ref.j++] = lexem[ref.i++];
     data->tokens->lex[ref.j] = '\0';

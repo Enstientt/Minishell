@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 18:23:06 by ahammout          #+#    #+#             */
-/*   Updated: 2023/02/18 14:21:43 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/10 19:44:13 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void    abs_syntax(t_data *data, int lexem_len, int n_quotes)
     {
         data->tokens->lex = malloc(sizeof(char) * (lexem_len - n_quotes));
         if (!data->tokens->lex)
-            exit_error(data, 2, "Minishell: Allocation failed.");
+            exit_error(data, "Minishell: Allocation failed.");
         while (lexem[ref.i] == data->tokens->type)
             ref.i++;
         while (lexem[ref.i] && lexem[ref.i] != data->tokens->type)
@@ -62,7 +62,6 @@ int analyze_quotes (t_data *data)
 {
     int n_quotes;
 
-    
     if (data->tokens->type == DQUOTE || data->tokens->type == SQUOTE)
     {
         n_quotes = quotes_syntax (data->tokens->lex, data->tokens->type);
@@ -73,8 +72,13 @@ int analyze_quotes (t_data *data)
             return (0);
         }
         abs_syntax(data, ft_strlen(data->tokens->lex), n_quotes);
-        if (!data->tokens->lex || ft_strchr(data->tokens->lex, DQUOTE))
+        if (!data->tokens->lex || ft_strchr(data->tokens->lex, DQUOTE)
+            || data->tokens->type == SQUOTE || data->tokens->prev->type == HEREDOC)
+        {
+            data->tokens->type = KEYWORD;   
             return (1);
+        }
+        data->tokens->type = KEYWORD;
         if (ft_strchr(data->tokens->lex, EXPAND_))
             split_token(data);
     }

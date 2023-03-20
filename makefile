@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/02/18 16:14:51 by ahammout         ###   ########.fr        #
+#    Updated: 2023/03/20 13:46:12 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,24 +18,30 @@ READLINEFLAG =   -lreadline -lhistory
 
 LIBFT = libft/libft.a
 
+NEXTLINE = get_next_line/get_next_line.a
+
 INCLUDES = includes/minishell.h
 
 NAME = minishell
 
 SRCS = 	srcs/main.c \
-		srcs/parsing/utils.c \
+		srcs/parsing/tools.c \
 		srcs/parsing/parse_line.c \
 		srcs/parsing/lexer/lexer.c \
 		srcs/parsing/lexer/lexer_check_tools.c \
 		srcs/parsing/lexer/lexer_tools.c \
 		srcs/parsing/lexer/lexer_quotes.c \
 		srcs/parsing/environment/set_environment.c \
+		srcs/parsing/environment/set_env_tools.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer_.c \
 		srcs/parsing/syntax_analyzer/syntax_quotes.c \
 		srcs/parsing/expander/expander.c \
 		srcs/parsing/expander/expandable.c \
 		srcs/parsing/expander/unexpandable.c \
+		srcs/parsing/parser/parser.c \
+		srcs/parsing/parser/parser_tools.c \
+		srcs/parsing/parser/redirections_handler.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -46,14 +52,17 @@ all : $(NAME)
 
 $(NAME) : $(OBJS) $(INCLUDES)
 	@make -C libft
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINEFLAG) -o $(NAME)
+	@make -C get_next_line
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(NEXTLINE) $(READLINEFLAG)  -o $(NAME)
 
 clean :
 	@make clean -C libft
+	@make clean -C get_next_line
 	@rm -rf $(OBJS)
 
 fclean : clean
 	@make fclean -C libft
+	@make fclean -C get_next_line
 	@rm -rf $(NAME)
 
 re : fclean all
