@@ -6,11 +6,50 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 20:17:53 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/07 20:45:09 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/22 19:53:43 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
+
+char	*ft_strjoin_free1(char *s1, char *s2)
+{
+	char	*str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (0);
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		str[i] = s2[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	free(s1);
+	return (str);
+}
+void free_array(char **array)
+{
+	int i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
 
 int	count_pps(t_exec	*exec)
 {
@@ -57,7 +96,7 @@ void	red_inp(t_exec	*tmp, int status, t_data	*data, int i)
 	return ;
 }
 
-int	*save_std(void)
+int	* save_std(void)
 {
 	int	*stds;
 
@@ -97,4 +136,53 @@ void	handle_loop(t_vars	pipe, int her_file, t_data	*data)
 	if (pipe.pids[pipe.i])
 		ignore_signal();
 	pipe_exe(pipe.pids, data, pipe.tmp, pipe.i);
+}
+
+char *ft_getev(t_data *data, char *str)
+{
+	t_env *tmp = data->env;
+
+	while (tmp != NULL)
+	{
+		if (ft_strcmp(tmp->name, str) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*get_path(char *str, t_data *data, int *status)
+{
+	char	**paths;
+	char	*path;
+	int		i;
+
+	path = ft_getenv(data,"PATH");
+	if (!path)
+ 	{
+		*status = 127;
+  		return (NULL);
+	}
+	paths = ft_split(path, ':');
+	if (!paths)
+	{
+		*status = 1;
+		return (NULL);
+	}
+
+	i = -1;
+	while (paths[++i])
+	{
+		path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin_free1(path, str);
+		if (access(path, F_OK) == 0)
+		{
+			free_array(paths);
+			return (path);
+		}
+		free(path);
+	}
+	*status = 127;
+	free_array(paths);
+	return (NULL);
 }
