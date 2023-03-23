@@ -12,9 +12,9 @@
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g
 
-READLINEFLAG =   -lreadline -lhistory
+READLINEFLAG =   -lreadline
 
 LIBFT = libft/libft.a
 
@@ -30,12 +30,23 @@ SRCS = 	srcs/main.c \
 		srcs/parsing/lexer/lexer_tools.c \
 		srcs/parsing/lexer/lexer_quotes.c \
 		srcs/parsing/environment/set_environment.c \
+		srcs/parsing/environment/sort_environemnt.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer.c \
 		srcs/parsing/syntax_analyzer/syntax_analyzer_.c \
 		srcs/parsing/syntax_analyzer/syntax_quotes.c \
 		srcs/parsing/expander/expander.c \
 		srcs/parsing/expander/expandable.c \
 		srcs/parsing/expander/unexpandable.c \
+		srcs/execution/built_in_cmd.c \
+		srcs/execution/export.c \
+		srcs/execution/unset.c \
+		srcs/execution/pipex.c \
+		srcs/execution/pipex_extra.c \
+		srcs/execution/pwd.c \
+		srcs/execution/signal_handler.c \
+		srcs/execution/exit.c \
+		srcs/execution/cmd_exec.c \
+		srcs/execution/echo.c \
 
 OBJS = $(SRCS:.c=.o)
 

@@ -115,7 +115,6 @@ typedef struct  s_data
     /////////////////////////////// execution /////////////////////////////////////
 void	ft_echo(t_exec	*exec);
 int     builtin(t_data *data, t_exec	*cmd);
-void	ft_cd(t_data	*data);
 int     count_pps(t_exec	*exec);
 void	signals_handler(void);
 void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
@@ -137,6 +136,16 @@ void	setLastNode(t_env *env);
 t_env	*find_node(char *str, t_data *data);
 void    ft_unset(t_exec *cmd, t_data *data);
 void    printEnv(t_env *env);
+void    execute_command(t_exec *exec, char *path, char **envp);
+void    ignore_signals();
+char	*get_path(char *str, t_data *data, int *status);
+void    printEnv(t_env *env);
+t_env   *sort_environment(t_data *data);
+void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
+void	close_fd(t_data	*data);
+char *ft_getenv(t_data *data, char *str);
+//void	ft_cd(void);
+
     /////////////////////////////// PARSING PART /////////////////////////////////////
 
 t_tokens        *parse_line(t_data *data);

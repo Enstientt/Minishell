@@ -20,6 +20,8 @@ int main(int ac, char **av, char **envp)
 
     (void)cmd;
     (void) **av;
+    data.envp_= envp;
+    set_environment(&data);
     if (ac == 1)
     {
         data.buffer = ft_strdup("");
@@ -36,9 +38,8 @@ int main(int ac, char **av, char **envp)
             }
             add_history (data.buffer);
             parse_line(&data);
-            printf("we are in main.c and data.buffer is:");
+            //printf("we are in main.c and data.buffer is:");
             /////// EXECUTION PART /////
-            //ft_export(&data, &cmd);
             //free_data(&data);
         }
     }

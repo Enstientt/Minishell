@@ -263,6 +263,7 @@ void    ft_export(t_data *data, t_exec *cmd)
 //     t_exec new_node;
 //     t_exec cmd ;
 //     t_data data;
+//     int status;
 //     int i = 1;
 //     data.envp_ = envp;
 //     set_environment(&data);
@@ -279,9 +280,10 @@ void    ft_export(t_data *data, t_exec *cmd)
 //     new_node.str[2] = NULL;
 // //     new_node->next = env;
 //  //   env = new_node;")
-//      ft_export(&data, &cmd);
-//     printEnv(sort_environment(&data));
+//      //ft_export(&data, &cmd);
+//     //printEnv(sort_environment(&data));
 //    // printf("the value is **** of ZAK is  %s",getenv("ZAK"));
+//    execute_command(&cmd, get_path(&cmd.str, &data, &status), &data);
 //     //sort_environment(&data);
 //      //ft_unset(&new_node, &data);
 //      //print_env(sort_environment(&data));

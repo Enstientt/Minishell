@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	pipes_redirection(t_exec *tmp, int file_, int i, t_data *data)
 {
 	int			status;
 
-	if (rederection_check(&tmp, file_))
+	if (1)
 	{
 		if (tmp->in_file == -1)
 			return (-1);
@@ -65,7 +65,7 @@ void	restore_parent(int	*stds, int status, int	*pids, t_data	*data)
 	if (status == 1)
 	{
 		i = -1;
-		close_fds(data);
+		//close_fds(data);
 		while (++i <= data->pipex->p_c)
 		{
 			waitpid(pids[i], &status, 0);
@@ -126,5 +126,5 @@ void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_)
 	restore_parent(pipe.std, 1, pipe.pids, data);
 	free(pipe.std);
 	free(pipe.pids);
-	free_pid(data);
+	//free_pid(data);
 }

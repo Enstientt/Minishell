@@ -12,7 +12,7 @@
 
 #include "../../../includes/minishell.h"
 
-t_env   *strToList(char **envp)
+static t_env   *strToList(char **envp)
 {
     t_env *env;
     t_env *tmp;

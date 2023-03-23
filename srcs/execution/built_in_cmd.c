@@ -10,26 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
+char *ft_tolower1(char *str)
+{
+	int i;
+	char *tmp;
+	
+	i = 0;
+	tmp = ft_strdup(str);
+	while (tmp[i])
+	{
+		tmp[i] = ft_tolower(tmp[i]);
+		i++;
+	}
+	return (tmp);
+}
 int	builtin(t_data *data, t_exec *cmd)
 {
+	char *command = ft_tolower1(cmd->str[0]);
 	if (!cmd)
 		return (1);
 	
-	char *command = ft_tolower(cmd->str[0]);
 	
 	if (!ft_strcmp(command, "echo"))
 		return (ft_echo(cmd), 0);
 	
 	if (!ft_strcmp(command, "cd"))
-		return (ft_cd(data), 0);
+		return ( 0);
 	
 	if (!ft_strcmp(command, "pwd"))
-		return (ft_pwd(data), 0);
+		return ( 0);
 	
 	if (!ft_strcmp(command, "export"))
-		rerturn (ft_export(data, cmd), 0);
+	{
+		ft_export(data, cmd);
+		return (0);
+	}
 	
 	if (!ft_strcmp(command, "unset"))
 		//unset command
@@ -39,7 +56,7 @@ int	builtin(t_data *data, t_exec *cmd)
 		if (cmd->str[1])
 			return (ft_putstr_fd("env with No arguments\n", 2), 0);
 		
-		return (print_env(data->env, data), 0);
+		return (printEnv(data->env), 0);
 	}
 	
 	if (!ft_strcmp(command, "exit"))

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	here_handler(int sig)
 {
@@ -19,6 +19,18 @@ void	here_handler(int sig)
 		ft_putstr_fd("\b\b  \b\b\n", 1);
 		exit(1);
 	}
+}
+
+void ignore_signals()
+{
+    struct sigaction sa;
+
+    sa.sa_handler = SIG_IGN;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
 }
 
 void	ignore_signal(void)
@@ -38,7 +50,7 @@ static void	signals_router(int signal, siginfo_t *siginfo, void *content)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		//rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }

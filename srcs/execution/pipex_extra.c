@@ -138,7 +138,7 @@ void	handle_loop(t_vars	pipe, int her_file, t_data	*data)
 	pipe_exe(pipe.pids, data, pipe.tmp, pipe.i);
 }
 
-char *ft_getev(t_data *data, char *str)
+char *ft_getenv(t_data *data, char *str)
 {
 	t_env *tmp = data->env;
 

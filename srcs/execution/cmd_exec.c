@@ -12,17 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void ignore_signals() {
-    struct sigaction sa;
-
-    sa.sa_handler = SIG_IGN;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-}
-
 void handle_exit_status(int status) {
     if (WIFEXITED(status))
         exitS= WEXITSTATUS(status);
@@ -69,8 +58,6 @@ void execute_command(t_exec *exec, char *path, char **envp) {
     
     save_file_descriptors(&saved_stdin, &saved_stdout);
     redirect_file_descriptors(exec->in_file, exec->out_file);
-
-    // Fork process
     pid = fork();
     if (pid == -1) {
         perror("fork");
@@ -82,8 +69,10 @@ void execute_command(t_exec *exec, char *path, char **envp) {
     waitpid(pid, &status, 0);
     handle_exit_status(status);
     signals_handler();
-    dup2(saved_stdin, stdin);
+    dup2(saved_stdin, STDIN_FILENO);
     close(saved_stdin);
-    dup2(saved_stdout, stdout);
+    dup2(saved_stdout, STDOUT_FILENO);
     close(saved_stdout);
 }
+
+
