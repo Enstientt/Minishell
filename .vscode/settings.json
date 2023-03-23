@@ -3,6 +3,8 @@
         "minishell.h": "c",
         "readline.h": "c",
         "history.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "typeinfo": "c",
+        "type_traits": "c"
     }
 }

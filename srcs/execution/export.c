@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 22:24:41 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/21 20:03:04 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/23 15:55:36 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void    ft_export(t_data *data, t_exec *cmd)
         i = 1;
         if(cmd->str[1] == NULL)
         {
-                print_env(sort_environment(data));
+                printEnv(sort_environment(data));
                 return;
         }
         while (cmd->str[i])
@@ -212,63 +212,62 @@ void    ft_export(t_data *data, t_exec *cmd)
 
 /***************************test section***********************************/
 
-t_env *env_to_linked_list(char **envp) {
-    t_env *head = NULL;
-    t_env *prev = NULL;
-    for (int i = 0; envp[i] != NULL; i++) {
-        char *name = strtok(envp[i], "=");
-        char *value = strtok(NULL, "=");
-        t_env *new_node = malloc(sizeof(t_env));
-        new_node->name = ft_strdup(name);
-        new_node->value = ft_strdup(value);
-        new_node->next = NULL;
-        if (prev == NULL) {
-            head = new_node;
-        } else {
-            prev->next = new_node;
-        }
-        prev = new_node;
-    }
-    return head;
-}
+// t_env *env_to_linked_list(char **envp) {
+//     t_env *head = NULL;
+//     t_env *prev = NULL;
+//     for (int i = 0; envp[i] != NULL; i++) {
+//         char *name = strtok(envp[i], "=");
+//         char *value = strtok(NULL, "=");
+//         t_env *new_node = malloc(sizeof(t_env));
+//         new_node->name = ft_strdup(name);
+//         new_node->value = ft_strdup(value);
+//         new_node->next = NULL;
+//         if (prev == NULL) {
+//             head = new_node;
+//         } else {
+//             prev->next = new_node;
+//         }
+//         prev = new_node;
+//     }
+//     return head;
+// }
 
-void print_env(t_env *env) {
-    while (env != NULL) {
-        printf("%s=%s\n", env->name, env->value);
-        env = env->next;
-    }
-}
+// void print_env(t_env *env) {
+//     while (env != NULL) {
+//         printf("%s=%s\n", env->name, env->value);
+//         env = env->next;
+//     }
+// }
 
-void free_env(t_env *env) {
-    t_env *temp;
-    while (env != NULL) {
-        temp = env;
-        env = env->next;
-        free(temp->name);
-        free(temp->value);
-        free(temp);
-    }
-}
+// void free_env(t_env *env) {
+//     t_env *temp;
+//     while (env != NULL) {
+//         temp = env;
+//         env = env->next;
+//         free(temp->name);
+//         free(temp->value);
+//         free(temp);
+//     }
+// }
 
-void add_env(t_env **env, char *name, char *value) {
-    t_env *new_node = malloc(sizeof(t_env));
-    new_node->name = ft_strdup(name);
-    new_node->value = ft_strdup(value);
-    new_node->next = *env;
-    *env = new_node;
-}
+// void add_env(t_env **env, char *name, char *value) {
+//     t_env *new_node = malloc(sizeof(t_env));
+//     new_node->name = ft_strdup(name);
+//     new_node->value = ft_strdup(value);
+//     new_node->next = *env;
+//     *env = new_node;
+// }
 
 
 // int main(int argc, char **argv, char **envp) {
-//     t_env *env = env_to_linked_list(envp);
 //     t_exec new_node;
 //     t_exec cmd ;
 //     t_data data;
 //     int i = 1;
-    
-//     data.env=env;
-//         cmd.str = malloc(sizeof(char *) * argc);  
-//         new_node.str = malloc(sizeof(char *) * argc);  
+//     data.envp_ = envp;
+//     set_environment(&data);
+//     cmd.str = malloc(sizeof(char *) * argc);  
+//     new_node.str = malloc(sizeof(char *) * argc);  
 //     while(argv[i])
 //     {
 //         cmd.str[i - 1] = argv[i];
@@ -280,11 +279,12 @@ void add_env(t_env **env, char *name, char *value) {
 //     new_node.str[2] = NULL;
 // //     new_node->next = env;
 //  //   env = new_node;")
-//     ft_export(&data, &cmd);
-//     print_env(sort_environment(&data));
+//      ft_export(&data, &cmd);
+//     printEnv(sort_environment(&data));
+//    // printf("the value is **** of ZAK is  %s",getenv("ZAK"));
 //     //sort_environment(&data);
-//      ft_unset(&new_node, &data);
-//      print_env(sort_environment(&data));
+//      //ft_unset(&new_node, &data);
+//      //print_env(sort_environment(&data));
 // //     print_env(sort_environment(&data));
 // //ft_unset(&new_node, &data);
 // //print_env(data.env);

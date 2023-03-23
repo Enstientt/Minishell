@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 20:17:53 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/22 19:53:43 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/23 15:20:34 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,3 +186,4 @@ char	*get_path(char *str, t_data *data, int *status)
 	free_array(paths);
 	return (NULL);
 }
+

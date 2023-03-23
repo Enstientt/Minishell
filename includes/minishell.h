@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/21 18:56:04 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:08:05 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	ft_echo(t_exec	*exec);
 int     builtin(t_data *data, t_exec	*cmd);
 void	ft_cd(t_data	*data);
 int     count_pps(t_exec	*exec);
+void	signals_handler(void);
 void	handle_loop(t_vars	pipe, int her_file, t_data	*data);
 int     *save_std(void);
 int     **pipe_gener(int count);
@@ -135,6 +136,7 @@ int     errorIn(const char* str);
 void	setLastNode(t_env *env);
 t_env	*find_node(char *str, t_data *data);
 void    ft_unset(t_exec *cmd, t_data *data);
+void    printEnv(t_env *env);
     /////////////////////////////// PARSING PART /////////////////////////////////////
 
 t_tokens        *parse_line(t_data *data);
