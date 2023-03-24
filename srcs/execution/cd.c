@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static int	change_to_home_directory(char *home_dir, char *oldpwd_var)
+static int	change_to_home_directory(t_data *data, char *home_dir)
 {
     char *cwd = getcwd(NULL, PATH_MAX);
     if (cwd == NULL)
@@ -20,29 +20,19 @@ static int	change_to_home_directory(char *home_dir, char *oldpwd_var)
         perror("getcwd");
         return 1;
     }
-
-    if (do_export("OLDPWD", cwd, false) == -1)
-    {
-        free(cwd);
-        return 1;
-    }
-
+    export1(data, "OLDPWD", cwd, false);
     if (chdir(home_dir) == -1)
     {
         perror(home_dir);
         free(cwd);
         return 1;
     }
-
     free(cwd);
-
-    if (do_export("PWD", home_dir, false) == -1)
-        return 1;
-
+    export1(data, "PWD", home_dir, false);
     return 0;
 }
 
-static int	change_to_directory(char *dir_path)
+static int	change_to_directory(t_data *data, char *dir_path)
 {
     char *cwd = getcwd(NULL, PATH_MAX);
     if (cwd == NULL)
@@ -50,41 +40,31 @@ static int	change_to_directory(char *dir_path)
         perror("getcwd");
         return 1;
     }
-
-    if (do_export("OLDPWD", cwd, false) == -1)
-    {
-        free(cwd);
-        return 1;
-    }
-
+    export1(data,"OLDPWD", cwd, false) ;
     if (chdir(dir_path) == -1)
     {
         perror(dir_path);
         free(cwd);
         return 1;
     }
-
     free(cwd);
-
-    if (do_export("PWD", dir_path, false) == -1)
-        return 1;
-
+    export1(data, "PWD", dir_path, false);
     return 0;
 }
 
-void	ft_cd(void)
+void	ft_cd(t_data *data)
 {
-    char *home_dir = env_("HOME");
+    char *dir_path ;
+    char *home_dir;
+    t_exec *tmp;
 
-    if (get_next_arg() == NULL)
-    {
-        if (change_to_home_directory(home_dir, "OLDPWD") == 0)
-            exitS = 0;
-    }
+    tmp = data->exec;
+    home_dir = getenv("HOME");
+    if (!tmp->str[1] && ft_strcmp(tmp->str[0], "cd") == 0)
+        exitS = change_to_home_directory(data, home_dir);
     else
     {
-        char *dir_path = get_next_arg();
-        if (change_to_directory(dir_path) == 0)
-            exitS = 0;
+        dir_path = tmp->str[1];
+        change_to_directory(data, dir_path);
     }
 }

@@ -130,6 +130,7 @@ void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
 void	handle_fds(t_data *data, int i);
 void	ft_exit(t_exec	*cmd);
 void    ft_export(t_data *data, t_exec *cmd);
+void    export1(t_data *data, char *name, char *value, bool append);
 t_env   *sort_environment(t_data *data);
 int     errorIn(const char* str);
 void	setLastNode(t_env *env);
@@ -143,8 +144,10 @@ void    printEnv(t_env *env);
 t_env   *sort_environment(t_data *data);
 void	restore_parent(int	*stds, int status, int	*pids, t_data	*data);
 void	close_fd(t_data	*data);
+char    *ft_getenv(t_data *data, char *str);
+int     ft_pwd(t_data *data);
+void    ft_cd(t_data *data);
 char *ft_getenv(t_data *data, char *str);
-//void	ft_cd(void);
 
     /////////////////////////////// PARSING PART /////////////////////////////////////
 

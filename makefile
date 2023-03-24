@@ -47,6 +47,7 @@ SRCS = 	srcs/main.c \
 		srcs/execution/exit.c \
 		srcs/execution/cmd_exec.c \
 		srcs/execution/echo.c \
+		srcs/execution/cd.c \
 
 OBJS = $(SRCS:.c=.o)
 
