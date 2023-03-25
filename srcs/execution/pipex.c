@@ -12,119 +12,134 @@
 
 #include "../../includes/minishell.h"
 
-int	pipes_redirection(t_exec *tmp, int file_, int i, t_data *data)
+int pipes_redirection(t_exec *tmp, int file_, int i, t_data *data)
 {
-	int			status;
+    int         status;
 
-	if (1)
-	{
-		if (tmp->in_file == -1)
-			return (-1);
-		red_inp(tmp, status, data, i);
-		if (tmp->out_file != 1)
-		{
-			if (i != data->pipex->p_c)
-				dup2(tmp->out_file, data->pipex->p_fd[i][1]);
-			else
-				dup2(tmp->out_file, 1);
-		}
-	}
-	return (0);
+    if (printf("check rederction"))
+    {
+        if (tmp->in_file == -1)
+            return (-1);
+        red_inp(tmp, status, data, i);
+        if (tmp->out_file != 1)
+        {
+            if (i != data->pipex->p_c)
+                dup2(tmp->out_file, data->pipex->p_fd[i][1]);
+            else
+                dup2(tmp->out_file, 1);
+        }
+    }
+    return (0);
 }
 
-void	handle_fds(t_data *data, int i)
-{
-	int	j;
+void handle_fds(t_data *data, int i) {
+    int j = 0;
 
-	j = -1;
-	while (++j < data->pipex->p_c)
-	{
-		if (j + 1 != i || i == 0)
-			close(data->pipex->p_fd[j][0]);
-		if (i == data->pipex->p_c || i != j)
-			close(data->pipex->p_fd[j][1]);
-	}
-	if (i != 0)
-	{
-		dup2(data->pipex->p_fd[i - 1][0], 0);
-		close(data->pipex->p_fd[i - 1][0]);
-	}
-	if (i != data->pipex->p_c)
-	{
-		dup2(data->pipex->p_fd[i][1], 1);
-		close(data->pipex->p_fd[i][1]);
-	}
+    while (j < data->pipex->p_c) {
+        if (j + 1 != i || i == 0) {
+            close(data->pipex->p_fd[j][0]); // Close read end
+        }
+        if (i == data->pipex->p_c || i != j) {
+            close(data->pipex->p_fd[j][1]); // Close write end
+        }
+        j++;
+    }
+
+    if (i != 0) {
+        dup2(data->pipex->p_fd[i - 1][0], 0); // Duplicate read end of previous process's pipe
+        close(data->pipex->p_fd[i - 1][0]); // Close original read end fd
+    }
+
+    if (i != data->pipex->p_c) {
+        dup2(data->pipex->p_fd[i][1], 1); // Duplicate write end of current process's pipe
+        close(data->pipex->p_fd[i][1]); // Close original write end fd
+    }
 }
 
-void	restore_parent(int	*stds, int status, int	*pids, t_data	*data)
-{
-	int		i;
 
-	dup2(stds[0], 0);
-	dup2(stds[1], 1);
-	if (status == 1)
-	{
-		i = -1;
-		//close_fds(data);
-		while (++i <= data->pipex->p_c)
-		{
-			waitpid(pids[i], &status, 0);
-			if (WIFEXITED(status))
-				exitS = WEXITSTATUS(status);
-			if (WIFSIGNALED(status))
-			{
-				if (WTERMSIG(status) == SIGINT)
-				{
-					ft_putstr_fd("\n", 1);
-					exitS = 130;
-				}
-			}
-		}
-		signals_handler();
-	}
+void    restore_parent(int  *stds, int status, int  *pids, t_data   *data)
+{
+    int     i;
+
+    dup2(stds[0], 0);
+    dup2(stds[1], 1);
+    if (status == 1)
+    {
+        i = -1;
+        //close_fds(data);
+        while (++i <= data->pipex->p_c)
+        {
+            waitpid(pids[i], &status, 0);
+            if (WIFEXITED(status))
+                exitS = WEXITSTATUS(status);
+            if (WIFSIGNALED(status))
+            {
+                if (WTERMSIG(status) == SIGINT)
+                {
+                    ft_putstr_fd("\n", 1);
+                    exitS = 128 + WTERMSIG(status);
+                }
+            }
+        }
+        signals_handler();
+    }
 }
 
-void	pipe_exe(int *pids, t_data	*data, t_exec *tmp, int i)
+void    pipe_exe(int *pids, t_data  *data, t_exec *tmp, int i)
 {
-	int	status;
+    int status;
 
-	if (pids[i] == 0)
-	{
-		handle_fds(data, i);
-		if (!builtin(data, tmp))
-			;
-		else
-		{
-			if (execve(get_path(tmp->str, data, &status),
-					tmp->str, data->envp_) == -1)
-			{
-				exitS = 127;
-				perror("Minishell ");
-			}
-		}
-		exit(exitS);
-	}
+    if (pids[i] == 0)
+    {
+        handle_fds(data, i);
+        if (!builtin(data, tmp))
+            ;
+        else
+        {
+            if (execve(get_path(tmp->str, data, &status),
+                    tmp->str, data->envp_) == -1)
+            {
+                exitS = 127;
+                perror("Minishell ");
+            }
+        }
+        exit(exitS);
+    }
 }
 
-void	exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_)
+ static void init_pipes(t_data *data, t_exec *tmp,t_vars *pipe)
 {
-	t_vars	pipe;
+    pipe->i = 0;
+    pipe->status = 1;
+    pipe->tmp = tmp;
+    pipe->pids = malloc(sizeof(int) * (data->pipex->p_c + 1));
+    pipe->std = save_std();
+}
+void    exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_)
+{
+    t_vars  pipe;
+    int i;
 
-	pipe.i = 0;
-	pipe.status = 1;
-	pipe.tmp = exc;
-	pipe.pids = malloc(sizeof(int) * (data->pipex->p_c + 1));
-	pipe.std = save_std();
-	if (data->pipex->p_c)
-		data->pipex->p_fd = pipe_gener(data->pipex->p_c);
-	while (pipe.i <= data->pipex->p_c && pipe.tmp)
-	{
-		handle_loop(pipe, file_, data);
-		pipe.tmp = pipe.tmp->next;
-		pipe.i++;
-	}
-	restore_parent(pipe.std, 1, pipe.pids, data);
-	free(pipe.std);
-	free(pipe.pids);
-	//free_pid(data);
+    i = 0;
+    init_pipes(data, exc, &pipe);
+    if (data->pipex->p_c)
+        data->pipex->p_fd = pipe_gener(data->pipex->p_c);
+    while (pipe.i <= data->pipex->p_c && pipe.tmp)
+    {
+        handle_loop(pipe, file_, data);
+        pipe.tmp = pipe.tmp->next;
+        pipe.i++;
+    }
+    restore_parent(pipe.std, 1, pipe.pids, data);
+    free(pipe.std);
+    free(pipe.pids);
+    if (data->pipex->p_fd[0])
+    {
+        while (i < data->pipex->p_c)
+        {
+            free(data->pipex->p_fd[i]);
+            i++;
+        }
+        free(data->pipex->p_fd);
+    }
 }

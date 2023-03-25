@@ -18,14 +18,14 @@ int main(int ac, char **av, char **envp)
     int     buffer_size;
     t_exec  exec;
 
-    data.envp_= envp;
-    exec.str = malloc(sizeof(char**) * 3);
-    exec.str[0] = ft_strdup("cd");
-    exec.str[1] = ft_strdup("/Users/zessadqu/Desktop/test");
-    exec.str[2] = NULL;
-    exec.in_file = 0;
-    exec.out_file = 1;
-    data.exec = &exec;
+    // data.envp_= envp;
+    // exec.str = malloc(sizeof(char**) * 3);
+    // exec.str[0] = ft_strdup("cd");
+    // exec.str[1] = ft_strdup("/Users/zessadqu/Desktop/test");
+    // exec.str[2] = NULL;
+    // exec.in_file = 0;
+    // exec.out_file = 1;
+    // data.exec = &exec;
     if (ac == 1)
     {
         data.buffer = ft_strdup("");
@@ -43,6 +43,7 @@ int main(int ac, char **av, char **envp)
             }
             add_history (data.buffer);
             parse_line(&data);
+            execute_command(&data.exec, get_path(&data.exec->str[0],&data, &buffer_size), envp);
         //     ft_cd(&data);
         //    ft_pwd(&data);
              //ft_pwd(&data);
