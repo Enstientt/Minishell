@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 01:41:50 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/21 15:44:19 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/26 23:03:22 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,23 @@ int	builtin(t_data *data, t_exec *cmd)
 		return (ft_echo(cmd), 0);
 	
 	if (!ft_strcmp(command, "cd"))
-		return ( 0);
+		return (ft_cd(data), 0);
 	
 	if (!ft_strcmp(command, "pwd"))
-		return ( 0);
+		return (ft_pwd(data), 0);
 	
 	if (!ft_strcmp(command, "export"))
-	{
-		ft_export(data, cmd);
-		return (0);
-	}
+		return (ft_export(data, cmd), 0);
 	
 	if (!ft_strcmp(command, "unset"))
-		//unset command
+		return (ft_unset(cmd, data), 0);
 	
 	if (!ft_strcmp(command, "env"))
 	{
 		if (cmd->str[1])
 			return (ft_putstr_fd("env with No arguments\n", 2), 0);
 		
-		return (printEnv(data->env), 0);
+		return (printEnv(data), 0);
 	}
 	
 	if (!ft_strcmp(command, "exit"))

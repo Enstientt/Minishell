@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 22:24:41 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/23 15:55:36 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/26 23:19:22 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ void    ft_export(t_data *data, t_exec *cmd)
         
         i = 1;
         if(cmd->str[1] == NULL)
-        {
-                printEnv(sort_environment(data));
-                return;
+        {       
+               export0(data);
+               return ;
         }
         while (cmd->str[i])
         {
