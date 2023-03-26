@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:46 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 14:39:05 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/26 01:42:04 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,14 @@
 void    free_data(t_data *data)
 {
     free(data->buffer);
-    free_env_list(data);
     free_tokens_list(data);
-    free_cmds_list(data);
 }
 
 void    exit_error(t_data *data, char *err)
 {
     free(data->buffer);
     free_tokens_list(data);
-    printf("%s\n", err);
+    ft_putstr_fd(err, 2);
     exit(EXIT_FAILURE);
 }
 

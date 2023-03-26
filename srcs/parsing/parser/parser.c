@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:36:39 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/18 23:17:35 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/26 01:44:36 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ char    **get_cmd_args(t_data *data)
     ref.i = 0;
     str = malloc(sizeof(char *) * get_size(data));
     if (!str)
-    {
-        free_cmds_list(data);
         exit_error(data, "Minishell: Allocation failed.");
-    }
     while (data->tokens && !is_redirection(data->tokens->type) && data->tokens->type != PIPE)
     {
         if (data->tokens->type != EMPTY)
@@ -72,10 +69,7 @@ t_exec  *parser(t_data *data)
             return (cmds);
         }
         if (data->tokens && data->tokens->type == PIPE)
-        {
             next_cmd(data);
-            data->tokens = data->tokens->next;
-        }
     }
     data->tokens = ptr;
     return (cmds);

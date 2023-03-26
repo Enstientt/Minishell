@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 14:38:11 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/26 01:32:07 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<sys/wait.h>
+#include<signal.h> 
 #include"../libft/libft.h"
 #include"../get_next_line/get_next_line.h"
 #include <readline/readline.h>
@@ -73,18 +75,20 @@ typedef struct  s_exec
 typedef struct  s_data
 {
     char        *buffer;
+    char        **envp_;
     t_env       *env;
     t_tokens    *tokens;
     t_exec      *cmds;
     int         err;
 }               t_data;
 
+
 //---------------------------------/ PARSING PART /--------------------------------------//
-void    parse_line(t_data *data);
+void            parse_line(t_data *data);
 
-    //////////////////////////////// LEXER ///////////////////////////////////////////
+//////////////////////////////// LEXER ///////////////////////////////////////////
 
-t_tokens        *lexer(t_data *data);
+t_tokens        *lexer(t_data *data);    
 int             is_keyword(char c);
 int             is_quoted(char c);
 int             is_whitespace(char c);
@@ -103,7 +107,7 @@ void            create_new_node(t_data *data, int *add_node);
 void            add_new_node(t_data *data);
 void            free_tokens_list(t_data *data);
 
-    ///////////////////////////////// ENVIRONMENT /////////////////////////////////
+///////////////////////////////// ENVIRONMENT /////////////////////////////////
 
 void            set_environment(t_data *data, char **envp);
 void            init_env_list(t_data *data);
@@ -112,7 +116,7 @@ int             fill_name(t_data *data, char *envp);
 int             fill_value(t_data *data, char *envp);
 void            free_env_list(t_data *data);
 
-    ///////////////////////////////// SYNTAX ANALYZER //////////////////////////////
+///////////////////////////////// SYNTAX ANALYZER //////////////////////////////
 
 t_tokens        *syntax_analyzer(t_data *data);
 int             analyze_begin_end(t_data *data);
@@ -124,7 +128,7 @@ void            abs_syntax(t_data *data, int lexem_len, int n_quotes);
 int             analyze_begin(t_tokens *token);
 int             analyze_end(t_tokens *token);
 int             analyze_file(t_tokens *token);
-
+    
 ///////////////////////////////// EXPANDER //////////////////////////////////////
 
 t_tokens        *expander(t_data *data);
@@ -156,10 +160,11 @@ int             append_handler(t_data *data);
 int             heredoc_handler(t_data *data);
 void            free_cmds_list(t_data *data);
 
-    /////////////////////////////////// TOOLS //////////////////////////////////
+/////////////////////////////////// TOOLS //////////////////////////////////
 
 void            exit_error(t_data *data, char *err);
 void            free_data(t_data *data);
+int             generate_error(t_data *data, char *error);
 char            **ft_2strdup(char **str);
 int             white_check(char *str);
 void            display_tokens(t_tokens *token);

@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/03/20 13:46:12 by ahammout         ###   ########.fr        #
+#    Updated: 2023/03/26 01:32:16 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRCS = 	srcs/main.c \
 		srcs/parsing/expander/unexpandable.c \
 		srcs/parsing/parser/parser.c \
 		srcs/parsing/parser/parser_tools.c \
-		srcs/parsing/parser/redirections_handler.c
+		srcs/parsing/parser/redirections_handler.c \
+		srcs/parsing/parser/heredoc_handler.c \
 
 OBJS = $(SRCS:.c=.o)
 

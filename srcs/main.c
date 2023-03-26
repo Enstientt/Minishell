@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:07 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 14:37:41 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/26 01:40:38 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ int main(int ac, char **av, char **envp)
     (void)**av;
     if (ac == 1)
     {
+        data.envp_ = envp;
         data.buffer = NULL;
         set_environment(&data, envp);
+        // minishell_sig_handler(&data);
         while (1)
         {
             buffer_size = 0;
@@ -35,7 +37,6 @@ int main(int ac, char **av, char **envp)
             parse_line(&data);
             /////// EXECUTION PART /////
 
-            // free_data(&data);
         }
     }
     return (0);
