@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:09:59 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/18 18:07:45 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/26 02:01:12 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int append_handler(t_data *data)
     if (data->tokens->type == APPEND)
         data->tokens = data->tokens->next;
     data->cmds->out_file = open(data->tokens->lex, O_WRONLY | O_APPEND);
-    if (data->cmds->out_file == -1)
+    if (data->cmds->out_file == -1 && data->tokens->type != APPEND)
         data->cmds->out_file = open(data->tokens->lex, O_CREAT | O_WRONLY | O_APPEND, 0644);
     data->tokens = data->tokens->next;
     if (data->tokens && (data->tokens->type == KEYWORD || data->tokens->type == REDOUT))
@@ -33,7 +33,7 @@ int redout_handler(t_data *data)
     if (data->tokens->type == REDOUT)
         data->tokens = data->tokens->next;
     data->cmds->out_file = open(data->tokens->lex, O_WRONLY);
-    if (data->cmds->out_file == -1)
+    if (data->cmds->out_file == -1 && data->tokens->type != REDOUT)
         data->cmds->out_file = open(data->tokens->lex, O_WRONLY | O_CREAT, 0644);
     data->tokens = data->tokens->next;
     if (data->tokens && (data->tokens->type == KEYWORD || data->tokens->type == REDOUT))
@@ -63,51 +63,30 @@ int redin_handler(t_data *data)
         redin_handler(data);
     }
     if (data->err)
-    {
         return (0);
-    }
     return (1);
-}
-
-int check_redirection(t_data *data)
-{
-    t_tokens *tokens;
-
-    tokens = data->tokens;
-    while (tokens && tokens->type != PIPE)
-    {
-        if (is_redirection(tokens->type))
-            return (1);
-        
-    }
-    return (0);
 }
 
 int redirection_handler(t_data *data)
 {
     while (data->tokens && data->tokens->type != PIPE)
     {
-        if (check_redirection(data))
+        if (data->tokens && data->tokens->type == REDOUT)
+            redout_handler(data);
+        else if (data->tokens && data->tokens->type == APPEND)
+            append_handler (data);
+        else if (data->tokens && data->tokens->type == REDIN)
         {
-            //// REDIRECTING INPUT
-            if (data->tokens && data->tokens->type == REDIN)
-            {
-                if (!redin_handler(data))
-                    return (0);
-            }
-
-            //// REDIRECTING OUTPUT
-            else if (data->tokens && data->tokens->type == REDOUT)
-                redout_handler(data);
-            
-            //// APPENDING OUTPUT
-            else if (data->tokens && data->tokens->type == APPEND)
-                append_handler (data);
-
-            // //// HEREDOC
-            // else if (data->tokens->type == HEREDOC)
-            //     heredoc_handler (data);
+            if (!redin_handler(data))
+                return (0);
         }
+        else if (data->tokens->type == HEREDOC)
+        {
+            if (!heredoc_handler(data))
+                return (0);
+        }
+        else
+            data->cmds = data->cmds->next;
     }
     return (1);
 }
