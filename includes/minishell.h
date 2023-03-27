@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/27 17:48:09 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 23:08:42 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@
 #include<unistd.h>
 #include<fcntl.h>
 #include<sys/wait.h>
-#include<signal.h> 
+#include<signal.h>
+#include <stdbool.h>
+#include <limits.h>
+#include <errno.h>
+#include <paths.h>
 #include"../libft/libft.h"
 #include"../get_next_line/get_next_line.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// int exit_s;
+int exitS;
 
 enum
 {
@@ -74,6 +78,21 @@ typedef struct  s_exec
     struct s_exec *next;
 }               t_exec;
 
+typedef struct s_pipe
+{
+    int p_c;
+    int **p_fd;
+} t_pipe;
+
+typedef struct s_vars
+{
+    t_exec *tmp;
+    int *pids;
+    int status;
+    int *std;
+    int i;
+} t_vars;
+
 typedef struct  s_data
 {
     char        *buffer;
@@ -81,6 +100,8 @@ typedef struct  s_data
     t_env       *env;
     t_tokens    *tokens;
     t_exec      *cmds;
+    t_pipe      *pipex;
+    char        path[PATH_MAX];
     int         err;
 }               t_data;
 
@@ -164,6 +185,44 @@ int             redout_handler(t_data *data);
 int             append_handler(t_data *data);
 int             heredoc_handler(t_data *data);
 void            free_cmds_list(t_data *data);
+
+//--------------------------------- EXECUTION PART --------------------------//
+
+void ft_echo(t_exec *exec);
+int builtin(t_data *data, t_exec *cmd);
+int count_pps(t_exec *exec);
+void signals_handler(void);
+void handle_loop(t_vars pipe, int her_file, t_data *data);
+int *save_std(void);
+int **pipe_gener(int count);
+void red_inp(t_exec *tmp, int status, t_data *data, int i);
+void close_fd(t_data *data);
+void handle_loop(t_vars pipe, int her_file, t_data *data);
+int pipes_redirection(t_exec *tmp, int file_, int i, t_data *data);
+void exec_pipes(t_exec *exc, t_data *data, int file_, char **envp_);
+void pipe_exe(int *pids, t_data *data, t_exec *tmp, int i);
+void restore_parent(int *stds, int status, int *pids, t_data *data);
+void handle_fds(t_data *data, int i);
+void ft_exit(t_exec *cmd);
+void ft_export(t_data *data, t_exec *cmd);
+void export1(t_data *data, char *name, char *value, bool append);
+t_env *sort_environment(t_data *data);
+int errorIn(const char *str);
+void setLastNode(t_env *env);
+t_env *find_node(char *str, t_data *data);
+void ft_unset(t_exec *cmd, t_data *data);
+void execute_command(t_exec *exec, char *path, char **envp);
+void ignore_signals();
+char *get_path(char *str, t_data *data, int *status);
+void printEnv(t_data *data);
+t_env *sort_environment(t_data *data);
+void restore_parent(int *stds, int status, int *pids, t_data *data);
+void close_fd(t_data *data);
+char *ft_getenv(t_data *data, char *str);
+int ft_pwd(t_data *data);
+void ft_cd(t_data *data);
+char *ft_getenv(t_data *data, char *str);
+void export0(t_data *data);
 
 /////////////////////////////////// TOOLS //////////////////////////////////
 
