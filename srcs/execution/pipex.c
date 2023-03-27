@@ -6,7 +6,7 @@
 /*   By: zessadqu <zessadqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:06:39 by zessadqu          #+#    #+#             */
-/*   Updated: 2023/03/20 23:17:56 by zessadqu         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:03:31 by zessadqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ int pipes_redirection(t_exec *tmp, int file_, int i, t_data *data)
         }
     }
     return (0);
+}
+
+void	close_fds(t_data	*data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->pipex->p_c)
+	{
+		close(data->pipex->p_fd[i][0]);
+		close(data->pipex->p_fd[i][1]);
+	}
 }
 
 void handle_fds(t_data *data, int i) {
@@ -66,7 +78,7 @@ void    restore_parent(int  *stds, int status, int  *pids, t_data   *data)
     if (status == 1)
     {
         i = -1;
-        //close_fds(data);
+        close_fds(data);
         while (++i <= data->pipex->p_c)
         {
             waitpid(pids[i], &status, 0);
