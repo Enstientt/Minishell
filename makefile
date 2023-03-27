@@ -6,7 +6,7 @@
 #    By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/25 11:15:10 by ahammout          #+#    #+#              #
-#    Updated: 2023/03/27 23:32:02 by ahammout         ###   ########.fr        #
+#    Updated: 2023/03/27 23:32:25 by ahammout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,6 @@ NEXTLINE = get_next_line/get_next_line.a
 INCLUDES = includes/minishell.h
 
 NAME = minishell
-
-# check 
 
 SRCS = 	srcs/main.c \
 		srcs/parsing/tools.c \
