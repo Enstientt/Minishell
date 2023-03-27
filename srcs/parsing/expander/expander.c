@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 18:13:17 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/19 23:43:22 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 22:01:13 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,35 @@ int handle_dolar_sign(char *lexem, char **pids)
     return (i);
 }
 
-void    lexem_matching(t_data *data)
+char    *free_old_lex(t_data *data)
 {
-    int     is_expandable;
-    char    *lexem;
-    char    *pids;
-    int     i;
+    char    *lex_tmp;
 
-    pids = NULL;
-    lexem = ft_strdup(data->tokens->lex);
+    lex_tmp = ft_strdup(data->tokens->lex);
     free(data->tokens->lex);
     data->tokens->lex = NULL;
-    i = handle_dolar_sign(lexem, &pids);
-    is_expandable = (i % 2);
-    if (is_expandable && lexem[i])
-        expandable (data, lexem, pids);
-    else if (!is_expandable && lexem[i])
-        unexpandable (data, lexem, pids);
+    return (lex_tmp);
+}
+
+void    expand_handler(t_data *data)
+{
+    char    *lexem;
+    char    *pids;
+    int     index;
+
+    lexem = free_old_lex(data);
+    index = handle_dolar_sign(lexem, &pids);
+    if ((index % 2) && lexem[index])
+        expandable(data, lexem, pids);
+    else if (!(index % 2) && lexem[index])
+        unexpandable(data, lexem, pids);
     else
         non_param(data, lexem, pids);
     free (lexem);
     free(pids);
 }
 
-t_tokens    *expander (t_data *data)
+t_tokens    *expander(t_data *data)
 {
     t_tokens    *head;
 
@@ -67,8 +72,9 @@ t_tokens    *expander (t_data *data)
     while (data->tokens != NULL)
     {
         if (data->tokens->type == EXPAND_ && data->tokens->prev->type != HEREDOC)
-            lexem_matching(data);
+            expand_handler(data);
         data->tokens = data->tokens->next;
     }
+    data->tokens = head;
     return (head);
 }

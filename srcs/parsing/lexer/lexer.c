@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:13:35 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/18 22:20:19 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:11:20 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,5 +137,7 @@ t_tokens *lexer(t_data *data)
                 i += special_op(data, data->buffer + i, data->buffer[i]);
         }
     }
+    free(data->buffer);
+    data->tokens = head;
     return (head);
 }

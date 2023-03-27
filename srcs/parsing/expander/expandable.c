@@ -6,32 +6,11 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 18:13:06 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/20 13:34:03 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 04:22:10 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-int update_size(char *lexem, char *pids, char *value)
-{
-    int len;
-    int i;
-
-    len = 0;
-    i = 0;
-    if (lexem && (ft_isdigit(lexem[i]) || lexem[i] == '@' || lexem[i] == '*'))
-    {
-        i++;
-        while (lexem[i])
-        {
-            len++;
-            i++;
-        }
-    }
-    if (value)
-        return ((ft_strlen(pids) - 1) + ft_strlen(value));
-    return (len + (ft_strlen(pids) - 1));
-}
 
 void var_not_exist(t_data *data, char *lexem, char *pids)
 {
@@ -95,6 +74,7 @@ char *get_value(t_data *data, char *var)
         }
         data->env = data->env->next;
     }
+    free(var);
     data->env = head;
     return (value);
 }
@@ -123,19 +103,16 @@ char *get_var(t_data *data, char *lexem)
 
 void expandable(t_data *data, char *lexem, char *pids)
 {
-    char *var;
-    char *value;
-    int i;
+    char    *value;
+    int     i;
 
     i = 0;
     while (lexem[i] == EXPAND_)
         i++;
-    var = get_var(data, lexem + i);
-    value = get_value(data, var);
+    value = get_value(data, get_var(data, lexem + i));
     if (value)
         var_exist(data, pids, value);
     else
         var_not_exist(data, lexem + i, pids);
-    free(var);
     free(value);
 }

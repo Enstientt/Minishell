@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 11:14:27 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/26 01:32:07 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:48:09 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include"../get_next_line/get_next_line.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+
+// int exit_s;
 
 enum
 {
@@ -84,7 +86,9 @@ typedef struct  s_data
 
 
 //---------------------------------/ PARSING PART /--------------------------------------//
-void            parse_line(t_data *data);
+
+int             main(int ac, char **av, char **envp);
+t_exec          *parse_line(t_data *data);
 
 //////////////////////////////// LEXER ///////////////////////////////////////////
 
@@ -132,7 +136,8 @@ int             analyze_file(t_tokens *token);
 ///////////////////////////////// EXPANDER //////////////////////////////////////
 
 t_tokens        *expander(t_data *data);
-void            lexem_matching(t_data *data);
+void            expand_handler(t_data *data);
+char            *free_old_lex(t_data *data);
 int             handle_dolar_sign(char *lexem, char **pids);
 void            expandable(t_data *data, char *lexem, char *pids);
 void            unexpandable(t_data *data, char *lexem, char *pids);

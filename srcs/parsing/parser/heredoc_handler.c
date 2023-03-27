@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 14:37:05 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/26 01:34:45 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 00:23:51 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,30 @@ int generate_error(t_data *data, char *error)
     return (0);
 }
 
+void    heredoc_action(t_data *data, int status, int fd[0])
+{
+    if (status == 0)
+    {
+        // exit_s = 0;
+        data->cmds->in_file = fd[0];
+        data->tokens = data->tokens->next->next;
+    }
+    else
+    {
+        // exit_s = 130;
+        close(fd[0]);
+        close(fd[1]);
+        free_data(data);
+        //// Get new prompt //
+        main (1, NULL, data->envp_);
+    }
+}
+
 void    heredoc_sig_handler(int sig)
 {
-    printf("SIgnal Catched: %d\n", sig);
-    exit(0);
+    (void)sig;
+    // exit_s = 130;
+    exit(130);
 }
 
 void    read_input(t_data *data, int fd[2])
@@ -62,8 +82,7 @@ int heredoc_handler(t_data *data)
     if (pid == 0)
         read_input(data, fd);
     waitpid(pid, &status, 0);
-    printf ("Child process exec status: %d\n", status);
-    data->cmds->in_file = fd[0];
-    data->tokens = data->tokens->next->next;
+    ///----- handle the heredoc exit status //
+    heredoc_action(data, status, fd);
     return (1);
 }

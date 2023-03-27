@@ -6,7 +6,7 @@
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:36:39 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/26 01:44:36 by ahammout         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:22:09 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,28 @@ char    **get_cmd_args(t_data *data)
 
 t_exec  *parser(t_data *data)
 {
-    t_exec      *cmds;
+    t_exec      *head;
     t_tokens    *ptr;
 
     init_cmds_list(data);
-    cmds = data->cmds;
+    head = data->cmds;
     ptr = data->tokens;
     while (data->tokens)
     {
-        if (data->tokens && !is_redirection(data->tokens->type) && data->tokens->type != PIPE)
+        if (data->tokens && !is_redirection(data->tokens->type) \
+            && data->tokens->type != PIPE)
             data->cmds->str = get_cmd_args(data);
-        if (data->tokens && !redirection_handler(data))
+        if (!redirection_handler(data))
         {
             data->tokens = ptr;
-            return (cmds);
+            return (head);
         }
         if (data->tokens && data->tokens->type == PIPE)
             next_cmd(data);
     }
     data->tokens = ptr;
-    return (cmds);
+    data->cmds = head;
+    //// OPTIONAL FUNCTION CALL
+    display_cmds(data->cmds);
+    return (head);
 }

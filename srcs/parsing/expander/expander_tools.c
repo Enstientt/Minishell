@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   expander_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahammout <ahammout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/14 22:04:41 by ahammout          #+#    #+#             */
-/*   Updated: 2023/03/27 18:19:09 by ahammout         ###   ########.fr       */
+/*   Created: 2023/03/27 01:13:54 by ahammout          #+#    #+#             */
+/*   Updated: 2023/03/27 01:14:54 by ahammout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-////////////////////////////////// PARSE_LINE //////////////////////////////
-
-// display_tokens(data->tokens);
-
-t_exec  *parse_line(t_data *data)
+int update_size(char *lexem, char *pids, char *value)
 {
-    if (lexer(data))
+    int len;
+    int i;
+
+    len = 0;
+    i = 0;
+    if (lexem && (ft_isdigit(lexem[i]) || lexem[i] == '@' || lexem[i] == '*'))
     {
-        if (syntax_analyzer(data) && !data->err)
+        i++;
+        while (lexem[i])
         {
-            if (expander(data) && !data->err)
-                return (parser(data));
+            len++;
+            i++;
         }
     }
-    return (0);
+    if (value)
+        return ((ft_strlen(pids) - 1) + ft_strlen(value));
+    return (len + (ft_strlen(pids) - 1));
 }
